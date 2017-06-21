@@ -95,7 +95,12 @@ const crossbarFacade = () => {
     };
 
     const subscribe = function ( topic, callback ) {
-        return getSession().subscribe( topic, callback, options.subscribe );
+
+        const newCallback = args => {
+            return callback.call(this, ...args);
+        };
+
+        return getSession().subscribe( topic, newCallback, options.subscribe );
     };
 
     return Object.freeze( {

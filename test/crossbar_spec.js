@@ -4,6 +4,7 @@ const chai = require( "chai" );
 const chaiAsPromised = require( "chai-as-promised" );
 chai.use( chaiAsPromised );
 const expect = chai.expect;
+const isFunction = require( "lodash.isfunction" );
 
 const sinon = require( "sinon" );
 const xbarFacade = require( "../src/crossbar.js" );
@@ -163,8 +164,30 @@ describe( "crossbarServer", () => {
         const subSpy = sinon.spy( server.getSession(), "subscribe" );
 
         server.subscribe( topic, callback );
-        expect( subSpy.calledWith( topic, callback, {} ) ).to.be.true;
+
+        const spyArgs = subSpy.args[0];
+        expect(spyArgs[0]).to.eql(topic);
+        expect(isFunction(spyArgs[1])).to.be.true;
+        expect(spyArgs[2]).to.eql({});
         subSpy.restore();
+    } );
+
+    it( "should be able to pass correct parameters to subscribed functions", done => {
+        server.setOpts( {
+            publish: {
+                exclude_me: false
+            }
+        } );
+
+        const topic = "TestTopic2";
+        const param1 = 1, param2 = 2;
+
+        server.subscribe( topic, ( n1, n2 ) => {
+            expect(n1).to.eql(param1);
+            expect(n2).to.eql(param2);
+            done();
+        } );
+        server.publish( topic, param1, param2 );
     } );
 
     it( "should disconnect from crossbar", done => {
