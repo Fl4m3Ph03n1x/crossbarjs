@@ -8,9 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test:unit": "NODE_ENV=test nyc mocha --reporter spec test/unit/*_spec.js || true",
-    "test:integration": "NODE_ENV=test nyc mocha --reporter spec test/integration/*_spec.js || true",
-    "test": "NODE_ENV=test nyc mocha --reporter spec test/**/*_spec.js || true"
+    "test": "NODE_ENV=test nyc mocha --reporter spec test/*_spec.js || true"
   },
   "repository": {
     "type": "git",
@@ -29,10 +27,13 @@
   },
   "homepage": "https://fl4m3ph03n1x.github.io/crossbarjs/index.html",
   "dependencies": {
-    "autobahn": "^17.5.1"
+    "autobahn": "^17.5.1",
+    "lodash.isfunction": "^3.0.8",
+    "lodash.isstring": "^4.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^7.0.0",
     "eslint": "^3.19.0",
     "mocha": "^3.4.1",
     "nyc": "^10.3.2",

@@ -1,3 +1,6 @@
 .git/
 coverage/
 node_modules/
+web/
+.crossbar/
+.nyc_output/
