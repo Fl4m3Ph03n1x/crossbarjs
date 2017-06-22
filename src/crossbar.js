@@ -42,12 +42,22 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function connect
-     *  @param    {Object=}  [connectOpts]    description
-     *  @param    {string}  [connectOpts.url = "ws://localhost:8080/ws"]    description
-     *  @param    {string}  [connectOpts.realm = "realm1"]  description
+     *  @param    {Object=}  [connectOpts]  Connection object with the
+     *                                      options to connect.
+     *                                      The provided Object must have both
+     *                                      an <code>url</code> and a
+     *                                      <code>realm</code> properties to
+     *                                      properly connect or else it fails.
+     *                                      If no  object is passed, the
+     *                                      function will use the default object.
+     *  @param    {string}  [connectOpts.url = "ws://localhost:8080/ws"]  The connection 'url' as described in autobahn connection options.
+     *  @param    {string}  [connectOpts.realm = "realm1"]                The connection 'realm' as described in autobahn connection options.
      *  @returns  {Promise}
      *
-     *  @description  description
+     *  @description  Connects this instance to the given direction. Will only
+     *                resolve once a connection is successfully open.
+     *
+     *  @see          {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|autobahn-js connection options}
      */
     const connect = function ( connectOpts = Object.assign( {}, DEFAULT_OPTS.connect ) ) {
         return new Promise( resolve => {
