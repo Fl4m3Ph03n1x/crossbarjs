@@ -18,10 +18,10 @@ describe( "crossbarServer", () => {
         func: () => "Hello World"
     }, {
         name: "add2",
-        func: args => args[ 0 ] + 2
+        func: n => n + 2
     }, {
         name: "concat2",
-        func: args => args[ 0 ] + " " + args[ 1 ]
+        func: ( str1, str2 ) => str1 + " " + str2
     } ];
 
     beforeEach( "reset crossbar state", () => {
@@ -165,10 +165,10 @@ describe( "crossbarServer", () => {
 
         server.subscribe( topic, callback );
 
-        const spyArgs = subSpy.args[0];
-        expect(spyArgs[0]).to.eql(topic);
-        expect(isFunction(spyArgs[1])).to.be.true;
-        expect(spyArgs[2]).to.eql({});
+        const spyArgs = subSpy.args[ 0 ];
+        expect( spyArgs[ 0 ] ).to.eql( topic );
+        expect( isFunction( spyArgs[ 1 ] ) ).to.be.true;
+        expect( spyArgs[ 2 ] ).to.eql( {} );
         subSpy.restore();
     } );
 
@@ -180,14 +180,32 @@ describe( "crossbarServer", () => {
         } );
 
         const topic = "TestTopic2";
-        const param1 = 1, param2 = 2;
+        const param1 = 1,
+            param2 = 2;
 
         server.subscribe( topic, ( n1, n2 ) => {
-            expect(n1).to.eql(param1);
-            expect(n2).to.eql(param2);
+            expect( n1 ).to.eql( param1 );
+            expect( n2 ).to.eql( param2 );
             done();
         } );
         server.publish( topic, param1, param2 );
+    } );
+
+    it("should reject if re-subscribing to a topic", () => {
+        const topic = "TestTopic";
+        expect( server.subscribe( topic ) ).to.be.rejectedWith( Error );
+    });
+
+    it( "should unsubscribe from topics", done => {
+        const topic = "TestTopic2";
+        server.unsubscribe( topic )
+            .then( done )
+            .catch( done );
+    } );
+
+    it( "should reject when unsubscribing from a topic we are not subscribed to", () => {
+        const fakeTopic = "fakeTopic";
+        expect( server.unsubscribe( fakeTopic ) ).to.be.rejectedWith( Error );
     } );
 
     it( "should disconnect from crossbar", done => {

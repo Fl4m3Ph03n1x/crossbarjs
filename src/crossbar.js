@@ -17,6 +17,9 @@ const crossbarFacade = () => {
         register: {}
     };
 
+    const subscritionMap = new Map(),
+        registrationMap = new Map();
+
     let connection,
         options = DEFAULT_OPTS;
 
@@ -55,13 +58,24 @@ const crossbarFacade = () => {
     };
 
     const registerOne = function ( name, func ) {
-        if ( !isString( name ) )
-            throw new TypeError( `${name} must be a String.` );
+        return new Promise( ( resolve, reject ) => {
+            if ( !isString( name ) ) {
+                reject( new TypeError(`${name} must be a String.`) );
+                return;
+            }
 
-        if ( !isFunction( func ) )
-            throw new TypeError( `${func} must be a Function.` );
+            if ( !isFunction( func ) ) {
+                reject( new TypeError(`${func} must be a Function.`) );
+                return;
+            }
 
-        return getSession().register( name, func, options.register );
+            getSession().register( name, deCrossbarify( func ), options.register )
+                .then( registration => {
+                    registrationMap.set( name, registration );
+                    resolve();
+                } )
+                .catch( err => reject( err ) );
+        } );
     };
 
     const registerMany = async function ( rpcList ) {
@@ -69,6 +83,47 @@ const crossbarFacade = () => {
             await registerOne( rpc.name, rpc.func )
                 .catch( err => {
                     throw new Error( `Failed to register "${rpc.name}":
+                      ${JSON.stringify(err)}` );
+                } );
+        }
+    };
+
+    const unregister = function ( args ) {
+        if ( Array.isArray( args ) )
+            return unregisterMany( args );
+
+        if ( isString( args ) && arguments.length === 1 )
+            return unregisterOne( args );
+
+        return Promise.reject( new Error( "Unrecognized parameters" ) );
+    };
+
+    const unregisterOne = function ( name ) {
+        return new Promise( ( resolve, reject ) => {
+            if ( !isString( name ) ) {
+                reject( new TypeError(`${name} must be a String.`) );
+                return;
+            }
+
+            if ( !registrationMap.has( name ) ) {
+                reject( new Error(`${name} is not registered.`) );
+                return;
+            }
+
+            getSession().unregister( name )
+                .then( () => {
+                    registrationMap.delete( name );
+                    resolve();
+                } )
+                .catch( err => reject( err ) );
+        } );
+    };
+
+    const unregisterMany = async function ( rpcNamesList ) {
+        for ( const rpcName of rpcNamesList ) {
+            await unregisterOne( rpcName )
+                .catch( err => {
+                    throw new Error( `Failed to unregister "${rpcName.name}":
                       ${JSON.stringify(err)}` );
                 } );
         }
@@ -95,12 +150,39 @@ const crossbarFacade = () => {
     };
 
     const subscribe = function ( topic, callback ) {
+        return new Promise( ( resolve, reject ) => {
 
-        const newCallback = args => {
-            return callback.call(this, ...args);
-        };
+            if ( subscritionMap.has( topic ) ) {
+                reject( new Error(`Already subscribed to ${topic}`) );
+                return;
+            }
 
-        return getSession().subscribe( topic, newCallback, options.subscribe );
+            getSession()
+                .subscribe( topic, deCrossbarify( callback ), options.subscribe )
+                .then( subscription => {
+                    subscritionMap.set( topic, subscription );
+                    resolve();
+                } )
+                .catch( err => reject( err ) );
+        } );
+    };
+
+    const deCrossbarify = callback => args => callback.call( null, ...args );
+
+    const unsubscribe = function ( topic ) {
+        return new Promise( ( resolve, reject ) => {
+            if ( !subscritionMap.has( topic ) ) {
+                reject( new Error (`Not subscribed to ${topic}`) );
+                return;
+            }
+
+            getSession().unsubscribe( subscritionMap.get( topic ) )
+                .then( () => {
+                    subscritionMap.delete( topic );
+                    resolve();
+                } )
+                .catch( err => reject( err ) );
+        } );
     };
 
     return Object.freeze( {
@@ -109,12 +191,14 @@ const crossbarFacade = () => {
         getSession,
         getConnection,
         register,
+        unregister,
         call,
         setOpts,
         getOpts,
         setOptsDefault,
         publish,
-        subscribe
+        subscribe,
+        unsubscribe
     } );
 };
 
