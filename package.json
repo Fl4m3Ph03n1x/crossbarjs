@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "NODE_ENV=test nyc mocha --reporter spec test/*_spec.js || true"
+    "test": "NODE_ENV=test nyc mocha --reporter spec test/*_spec.js || true",
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdocConf.json ./src/**.js -d ./docs -t ./node_modules/ink-docstrap/template -R ./docs/DOCS_README.md"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,9 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^7.0.0",
     "eslint": "^3.19.0",
+    "ink-docstrap": "^1.3.0",
+    "jsdoc": "^3.4.3",
+    "jsdoc-strip-async-await": "^0.1.0",
     "mocha": "^3.4.1",
     "nyc": "^10.3.2",
     "sinon": "^2.2.0"

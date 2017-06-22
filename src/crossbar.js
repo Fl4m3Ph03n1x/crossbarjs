@@ -4,6 +4,15 @@ const isString = require( "lodash.isstring" );
 const isFunction = require( "lodash.isfunction" );
 const autobahn = require( "autobahn" );
 
+/**
+ *  @public
+ *  @author   Pedro Miguel P. S. Martins
+ *  @version  1.0.1
+ *  @module   crossbarFacade
+ *  @desc     Encapsulates crossbar publish/subscribe and
+ *            register/unregister/call functionality into a facade, easier to
+ *            use and reason about.
+ */
 const crossbarFacade = () => {
 
     const DEFAULT_OPTS = {
@@ -23,6 +32,15 @@ const crossbarFacade = () => {
     let connection,
         options = DEFAULT_OPTS;
 
+
+    /**
+     *  @public
+     *  @function  connect
+     *  @param    {Object}  connectOpts   description
+     *  @returns  {Promise}
+     *
+     *  @description  description
+     */
     const connect = function ( connectOpts = Object.assign( {}, DEFAULT_OPTS.connect ) ) {
         return new Promise( resolve => {
             connection = new autobahn.Connection( connectOpts );
@@ -31,6 +49,14 @@ const crossbarFacade = () => {
         } );
     };
 
+
+    /**
+     *  @public
+     *  @function disconnect
+     *  @returns {Promise}
+     *
+     *  @description     Promise
+     */
     const disconnect = function () {
         return new Promise( resolve => {
             connection.onclose = () => resolve();
@@ -38,13 +64,38 @@ const crossbarFacade = () => {
         } );
     };
 
+    /**
+     *  @public
+     *  @function getSession
+     *  @returns {type}  description
+     *
+     *  @description  description
+     */
     const getSession = function () {
         return connection.session;
     };
+
+
+    /**
+     *  @public
+     *  @function getConnection
+     *  @returns {type}  description
+     *
+     *  @description description
+     */
     const getConnection = function () {
         return connection;
     };
 
+
+    /**
+     *  @public
+     *  @function register
+     *  @param  {type} ...args description
+     *  @returns {type}         description
+     *
+     *  @description  description
+     */
     const register = function ( ...args ) {
         const argsArray = Array.from( args );
 
@@ -88,6 +139,15 @@ const crossbarFacade = () => {
         }
     };
 
+
+    /**
+     *  @public
+     *  @function unregister
+     *  @param  {type} args description
+     *  @returns {type}      description
+     *
+     *  @description  description
+     */
     const unregister = function ( args ) {
         if ( Array.isArray( args ) )
             return unregisterMany( args );
@@ -129,26 +189,79 @@ const crossbarFacade = () => {
         }
     };
 
+    /**
+     *  @public
+     *  @function call
+     *  @param  {type} rpcName description
+     *  @param  {type} ...args description
+     *  @returns {type}         description
+     *
+     *  @description description
+     */
     const call = function ( rpcName, ...args ) {
         return getSession().call( rpcName, args, options.call );
     };
 
+    /**
+     *  @public
+     *  @function getOpts
+     *  @returns {type}  description
+     *
+     *  @description  description
+     */
     const getOpts = function () {
         return Object.assign( {}, options );
     };
 
+
+    /**
+     *  @public
+     *  @function setOpts
+     *  @param    {type}  newOpts description
+     *  @returns  {type}          description
+     *
+     *  @description  description
+     */
     const setOpts = function ( newOpts ) {
         options = newOpts;
     };
 
+
+    /**
+     *  @public
+     *  @function setOptsDefault
+     *  @returns  {type}  description
+     *
+     *  @description  description
+     */
     const setOptsDefault = function () {
         setOpts( DEFAULT_OPTS );
     };
 
+
+    /**
+     *  @public
+     *  @function publish
+     *  @param    {String}  topic   description
+     *  @param    {type} ...message description
+     *  @returns  {Promise}         description
+     *
+     *  @description  description
+     */
     const publish = function ( topic, ...message ) {
         return getSession().publish( topic, message, {}, options.publish );
     };
 
+
+    /**
+     *  @public
+     *  @function subscribe
+     *  @param    {String}    topic     description
+     *  @param    {Function}  callback  description
+     *  @returns  {Promise}             description
+     *
+     *  @description  description
+     */
     const subscribe = function ( topic, callback ) {
         return new Promise( ( resolve, reject ) => {
 
@@ -169,6 +282,15 @@ const crossbarFacade = () => {
 
     const deCrossbarify = callback => args => callback.call( null, ...args );
 
+
+    /**
+     *  @public
+     *  @function unsubscribe
+     *  @param    {String}  topic description
+     *  @returns  {Promise}       description
+     *
+     *  @description  description
+     */
     const unsubscribe = function ( topic ) {
         return new Promise( ( resolve, reject ) => {
             if ( !subscritionMap.has( topic ) ) {
