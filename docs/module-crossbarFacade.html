@@ -37,6 +37,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
 		</ul>
         
             <div class="col-sm-3 col-md-3">
@@ -159,7 +166,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~call"><span class="type-signature">&lt;inner> </span>call(rpcName)</h4>
+    <h4 class="name" id="~call"><span class="type-signature">&lt;inner> </span>call(rpcName, args)</h4>
     
     
 </dt>
@@ -190,6 +197,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -208,13 +217,21 @@
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">string</span>
 
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -226,19 +243,29 @@
 
         <tr>
             
-                <td class="name"><code>...args</code></td>
+                <td class="name"><code>args</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">Object</span>
 
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -318,7 +345,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type">Promise</span>
 
 
 
@@ -335,7 +362,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~connect"><span class="type-signature">&lt;inner> </span>connect(connectOpts)</h4>
+    <h4 class="name" id="~connect"><span class="type-signature">&lt;inner> </span>connect( [connectOpts])</h4>
     
     
 </dt>
@@ -366,6 +393,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -392,10 +421,130 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
+            <td class="description last">description
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    "ws://localhost:8080/ws"
+                
+                </td>
+            
+
             <td class="description last">description</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>realm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    "realm1"
+                
+                </td>
+            
+
+            <td class="description last">description</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -887,7 +1036,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~publish"><span class="type-signature">&lt;inner> </span>publish(topic)</h4>
+    <h4 class="name" id="~publish"><span class="type-signature">&lt;inner> </span>publish(topic, message)</h4>
     
     
 </dt>
@@ -918,6 +1067,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -936,13 +1087,21 @@
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -954,19 +1113,29 @@
 
         <tr>
             
-                <td class="name"><code>...message</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">Object</span>
 
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -1063,7 +1232,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~register"><span class="type-signature">&lt;inner> </span>register()</h4>
+    <h4 class="name" id="~register"><span class="type-signature">&lt;inner> </span>register(args)</h4>
     
     
 </dt>
@@ -1106,13 +1275,16 @@
 
         <tr>
             
-                <td class="name"><code>...args</code></td>
+                <td class="name"><code>args</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;<a href="global.html#RPC">RPC</a>></span>
 
 
 
@@ -1518,7 +1690,7 @@
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
 
@@ -1694,7 +1866,10 @@
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
 
 
 
@@ -1780,7 +1955,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type">Promise</span>
 
 
 
@@ -1846,7 +2021,7 @@
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
 
@@ -1995,7 +2170,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-22T14:21:08+02:00
+		on 2017-06-22T15:28:52+02:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

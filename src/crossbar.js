@@ -5,6 +5,13 @@ const isFunction = require( "lodash.isfunction" );
 const autobahn = require( "autobahn" );
 
 /**
+ *  @typedef  RPC
+ *  @type     {Object}
+ *  @property {string}    name  The name of the RPC.
+ *  @property {function}  func  The function to execute.
+ */
+
+/**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
  *  @version  1.0.1
@@ -32,11 +39,12 @@ const crossbarFacade = () => {
     let connection,
         options = DEFAULT_OPTS;
 
-
     /**
      *  @public
-     *  @function  connect
-     *  @param    {Object}  connectOpts   description
+     *  @function connect
+     *  @param    {Object=}  [connectOpts]    description
+     *  @param    {string}  [connectOpts.url = "ws://localhost:8080/ws"]    description
+     *  @param    {string}  [connectOpts.realm = "realm1"]  description
      *  @returns  {Promise}
      *
      *  @description  description
@@ -48,7 +56,6 @@ const crossbarFacade = () => {
             connection.open();
         } );
     };
-
 
     /**
      *  @public
@@ -91,8 +98,8 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function register
-     *  @param  {type} ...args description
-     *  @returns {type}         description
+     *  @param    {(string|RPC[])} args description
+     *  @returns  {type}         description
      *
      *  @description  description
      */
@@ -143,8 +150,8 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function unregister
-     *  @param  {type} args description
-     *  @returns {type}      description
+     *  @param  {(string|string[])} args  description
+     *  @returns {Promise}      description
      *
      *  @description  description
      */
@@ -192,9 +199,9 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function call
-     *  @param  {type} rpcName description
-     *  @param  {type} ...args description
-     *  @returns {type}         description
+     *  @param    {string}    rpcName description
+     *  @param    {...Object} args    description
+     *  @returns  {Promise}           description
      *
      *  @description description
      */
@@ -242,9 +249,9 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function publish
-     *  @param    {String}  topic   description
-     *  @param    {type} ...message description
-     *  @returns  {Promise}         description
+     *  @param    {string}    topic   description
+     *  @param    {...Object} message description
+     *  @returns  {Promise}           description
      *
      *  @description  description
      */
@@ -256,8 +263,8 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function subscribe
-     *  @param    {String}    topic     description
-     *  @param    {Function}  callback  description
+     *  @param    {string}    topic     description
+     *  @param    {function}  callback  description
      *  @returns  {Promise}             description
      *
      *  @description  description
@@ -286,7 +293,7 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function unsubscribe
-     *  @param    {String}  topic description
+     *  @param    {string}  topic description
      *  @returns  {Promise}       description
      *
      *  @description  description
