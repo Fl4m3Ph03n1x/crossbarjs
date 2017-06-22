@@ -60,12 +60,12 @@ const crossbarFacade = () => {
     const registerOne = function ( name, func ) {
         return new Promise( ( resolve, reject ) => {
             if ( !isString( name ) ) {
-                reject( new TypeError(`${name} must be a String.`) );
+                reject( new TypeError( `${name} must be a String.` ) );
                 return;
             }
 
             if ( !isFunction( func ) ) {
-                reject( new TypeError(`${func} must be a Function.`) );
+                reject( new TypeError( `${func} must be a Function.` ) );
                 return;
             }
 
@@ -101,16 +101,16 @@ const crossbarFacade = () => {
     const unregisterOne = function ( name ) {
         return new Promise( ( resolve, reject ) => {
             if ( !isString( name ) ) {
-                reject( new TypeError(`${name} must be a String.`) );
+                reject( new TypeError( `${name} must be a String.` ) );
                 return;
             }
 
             if ( !registrationMap.has( name ) ) {
-                reject( new Error(`${name} is not registered.`) );
+                reject( new Error( `${name} is not registered.` ) );
                 return;
             }
 
-            getSession().unregister( name )
+            getSession().unregister( registrationMap.get( name ) )
                 .then( () => {
                     registrationMap.delete( name );
                     resolve();
@@ -153,7 +153,7 @@ const crossbarFacade = () => {
         return new Promise( ( resolve, reject ) => {
 
             if ( subscritionMap.has( topic ) ) {
-                reject( new Error(`Already subscribed to ${topic}`) );
+                reject( new Error( `Already subscribed to ${topic}` ) );
                 return;
             }
 
@@ -172,7 +172,7 @@ const crossbarFacade = () => {
     const unsubscribe = function ( topic ) {
         return new Promise( ( resolve, reject ) => {
             if ( !subscritionMap.has( topic ) ) {
-                reject( new Error (`Not subscribed to ${topic}`) );
+                reject( new Error( `Not subscribed to ${topic}` ) );
                 return;
             }
 

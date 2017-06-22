@@ -139,6 +139,44 @@ describe( "crossbarServer", () => {
         expect( server.register( wrongParam ) ).to.be.rejectedWith( Error );
     } );
 
+    it( "should be able to unregister a registered RPC", done => {
+        server.unregister( "hello" )
+            .then( () => done() )
+            .catch( err => done( err ) );
+    } );
+
+    it( "should be able to unregister multiple registered RPCs", done => {
+        server.unregister( [ "concat2", "add2" ] )
+            .then( () => done() )
+            .catch( err => done( err ) );
+    } );
+
+    it( "should reject if trying to unregister an unknown RPC", () => {
+        expect( server.unregister( "bananas" ) ).to.be.rejectedWith( Error );
+    } );
+
+    it( "should reject if unregister is called with wrong parameters", () => {
+        expect( server.unregister( 0 ) ).to.be.rejectedWith( Error );
+    } );
+
+    it( "should reject if unregister gets an array with invalid arguments", () => {
+        expect( server.unregister( [ 0, 1 ] ) ).to.be.rejectedWith( Error );
+    } );
+
+    it( "should reject when crossbar fails to unregister", done => {
+        const unregisterStub = sinon.stub( server.getSession(), "unregister" );
+        unregisterStub.rejects();
+
+        const rpcName = "test",
+            rpcFn = () => {};
+        server.register( rpcName, rpcFn )
+            .then( () => {
+                expect( server.unregister( rpcName ) ).to.be.rejectedWith( Error );
+                unregisterStub.restore();
+                done();
+            } );
+    } );
+
     it( "should publish messages with one argument", () => {
         const message = "Hello World";
         const topic = "event";
@@ -191,10 +229,19 @@ describe( "crossbarServer", () => {
         server.publish( topic, param1, param2 );
     } );
 
-    it("should reject if re-subscribing to a topic", () => {
+    it( "should reject if re-subscribing to a topic", () => {
         const topic = "TestTopic";
         expect( server.subscribe( topic ) ).to.be.rejectedWith( Error );
-    });
+    } );
+
+    it( "should reject when crossbar fails to subscribe", () => {
+        const subscribeStub = sinon.stub( server.getSession(), "subscribe" );
+        subscribeStub.rejects();
+
+        const topic = "test1";
+        expect( server.subscribe( topic ) ).to.be.rejectedWith( Error );
+        subscribeStub.restore();
+    } );
 
     it( "should unsubscribe from topics", done => {
         const topic = "TestTopic2";
@@ -206,6 +253,22 @@ describe( "crossbarServer", () => {
     it( "should reject when unsubscribing from a topic we are not subscribed to", () => {
         const fakeTopic = "fakeTopic";
         expect( server.unsubscribe( fakeTopic ) ).to.be.rejectedWith( Error );
+    } );
+
+    it( "should reject when crossbar fails to unsubscribe", done => {
+        const topic = "TestTopic1";
+        const callback = () => {};
+
+        server.subscribe( topic, callback )
+            .then( () => {
+                const unsubscribeStub = sinon.stub( server.getSession(), "unsubscribe" );
+                unsubscribeStub.rejects();
+
+                expect( server.unsubscribe( topic ) ).to.be.rejectedWith( Error );
+                unsubscribeStub.restore();
+                done();
+            } )
+            .catch( err => done( err ) );
     } );
 
     it( "should disconnect from crossbar", done => {
