@@ -11,6 +11,17 @@ const xbarFacade = require( "../src/crossbar.js" );
 
 describe( "crossbarServer", () => {
 
+    const DEFAULT_OPTS = {
+        connect: {
+            "url": "ws://localhost:8080/ws",
+            "realm": "realm1"
+        },
+        publish: {},
+        subscribe: {},
+        call: {},
+        register: {}
+    };
+
     const server = Object.assign( {}, xbarFacade() );
 
     const rpcList = [ {
@@ -28,32 +39,31 @@ describe( "crossbarServer", () => {
         server.setOptsDefault();
     } );
 
+    it( "should getOpts correctly", () => {
+        expect( server.getOpts() ).to.eql( DEFAULT_OPTS );
+    } );
+
+    it( "should setOpts correctly", () => {
+        const modification = {
+            publish: "I like bananas"
+        };
+        const expected = Object.assign( {}, DEFAULT_OPTS, modification );
+        server.setOpts( modification );
+        expect( server.getOpts() ).to.eql( expected );
+    } );
+
+    it("should reset options to default", () => {
+        server.setOptsDefault();
+        expect( server.getOpts() ).to.eql( DEFAULT_OPTS );
+    });
+
     it( "should connect to crossbar", done => {
         server.connect()
             .then( () => {
                 expect( server.getConnection().isConnected ).to.be.true;
             } )
-            .then( done )
+            .then( () => done() )
             .catch( err => done( err ) );
-    } );
-
-    it( "should getOpts correctly", () => {
-        const DEFAULT_OPTS = {
-            connect: {
-                "url": "ws://localhost:8080/ws",
-                "realm": "realm1"
-            },
-            publish: {},
-            subscribe: {},
-            call: {},
-            register: {}
-        };
-        expect( server.getOpts() ).to.eql( DEFAULT_OPTS );
-    } );
-
-    it( "should setOpts correctly", () => {
-        server.setOpts( {} );
-        expect( server.getOpts() ).to.eql( {} );
     } );
 
     it( "should have an open connection after connecting", () => {

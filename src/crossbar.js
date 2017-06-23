@@ -12,6 +12,19 @@ const autobahn = require( "autobahn" );
  */
 
 /**
+ *  @typedef  options
+ *  @type     {Object}
+ *  @property {Object}  connect             See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|connection options}
+ *  @property {string}  [connect.url="ws://localhost:8080/ws"]  Crossbar "url" to connect to.
+ *  @property {string}  [connect.realm="realm1"]                Crossbar "realm" for the "url".
+ *  @property {Object}  [publish={}]        See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#publish|publish options}
+ *  @property {Object}  [subscribe={}]      See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#subscribe|subscribe options}
+ *  @property {Object}  [call={}]           See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#call|call options}
+ *  @property {Object}  [register={}]       See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#register|register options}
+ *
+ */
+
+/**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
  *  @version  1.0.1
@@ -22,7 +35,7 @@ const autobahn = require( "autobahn" );
  */
 const crossbarFacade = () => {
 
-    const DEFAULT_OPTS = {
+    const DEFAULT_OPTS = Object.freeze( {
         connect: {
             "url": "ws://localhost:8080/ws",
             "realm": "realm1"
@@ -31,13 +44,13 @@ const crossbarFacade = () => {
         subscribe: {},
         call: {},
         register: {}
-    };
+    } );
 
     const subscritionMap = new Map(),
         registrationMap = new Map();
 
     let connection,
-        options = DEFAULT_OPTS;
+        options = Object.assign( {}, DEFAULT_OPTS );
 
     /**
      *  @public
@@ -75,8 +88,21 @@ const crossbarFacade = () => {
      *  crossbar.connect(connectParams)
      *    .then(() => console.log("Great Success!"))
      *    .catch(console.log);
+     *
+     *  @example  <caption>Additionally, you may also change the "options.connect":</caption>
+     *  const crossbarjs = require("crossbarjs");
+     *
+     *  const crossbar  = crossbarjs();
+     *
+     *  crossbar.setOpts({
+     *    connect: { url: "myURL", realm: "Lovecraft" }
+     *  });
+     *
+     *  crossbar.connect()
+     *    .then(() => console.log("Great Success!"))
+     *    .catch(console.log);
      */
-    const connect = function ( connectOpts = Object.assign( {}, DEFAULT_OPTS.connect ) ) {
+    const connect = function ( connectOpts = options.connect ) {
         return new Promise( resolve => {
             connection = new autobahn.Connection( connectOpts );
             connection.onopen = () => resolve();
@@ -119,9 +145,18 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function getSession
-     *  @returns {type}  description
+     *  @returns {Session}
      *
-     *  @description  description
+     *  @description  Returns the current autobahn.Session object. Ideally you
+     *                shouldn't need to use it with the current interface, but
+     *                in case you need you can have direct access to it.
+     *
+     *  @see {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#sessions|autobahn-js sessions}
+     *
+     *  @example <caption>Using a session:</caption>
+     *  //Assuming we have previously connected
+     *  const session = crossbar.getSession();
+     *  console.log(`Session id is: ${session.id}`);
      */
     const getSession = function () {
         return connection.session;
@@ -130,22 +165,62 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function getConnection
-     *  @returns {type}  description
+     *  @returns {Connection}
      *
-     *  @description description
+     *  @description  Returns the current autobahn.Connection object.
+     *
+     *  @see  {@link  https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connections|autobahn-js connections}
+     *
+     *  @example <caption>Using a connection:</caption>
+     *  //Assuming we have previously connected
+     *  const conn = crossbar.getConnection();
      */
     const getConnection = function () {
         return connection;
     };
 
-
     /**
      *  @public
      *  @function register
-     *  @param    {(string|RPC[])} args description
-     *  @returns  {type}         description
+     *  @param    {(string|RPC[])}  args  It can either receive two arguments,
+     *                                    a string and a function, to register
+     *                                    one RPC, or it can receive an array of
+     *                                    RPC objects, to register them all.
+     *  @returns  {Promise}
      *
-     *  @description  description
+     *  @description  Registers the given RPCs, biinding each RPC to a name. It
+     *                can either register a single RPC, or an array of RPC
+     *                objects. Resolves if all RPCs were registered successfully
+     *                or rejects if one of them fails.
+     *
+     *  @example <caption>Registering a single RPC:</caption>
+     *  //Assuming we have previously connected
+     *  const myHello = () => {
+     *      console.log("Hello World");
+     *  }
+     *
+     *  crossbar.register("hello", myHello)
+     *      .then(() => console.log("great success!"))
+     *      .catch(console.log);
+     *
+     *  @example <caption>Registering a multiple RPCs:</caption>
+     *  //Assuming we have previously connected
+     *  const myHello = () => {
+     *      console.log("Hello World");
+     *  }
+     *
+     *  const myGoodbye = () => {
+     *      console.log("Goodbye World!");
+     *  };
+     *
+     *  const RPCs = [
+     *      { name: "hello" , func: myHello   },
+     *      { name: "bye"   , func: myGoodbye }
+     *  ];
+     *
+     *  crossbar.register(RPCs)
+     *      .then(() => console.log("great success!"))
+     *      .catch(console.log);
      */
     const register = function ( ...args ) {
         const argsArray = Array.from( args );
@@ -194,10 +269,26 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function unregister
-     *  @param  {(string|string[])} args  description
-     *  @returns {Promise}      description
+     *  @param  {(string|string[])} args  The name of a single RPC to unregister
+     *                                    or an array of RPC names to unregister.
+     *  @returns {Promise}
      *
-     *  @description  description
+     *  @description  Unregisters the RPC with the given name, or all the RPCs
+     *                with the names provided in the array. Returns a promise
+     *                once all RPCs have be unregistered successfully or rejects
+     *                if one of them fails.
+     *
+     *  @example <caption>Unregister a single RPC:</caption>
+     *  //Assuming we have previously connected and registered "hello"
+     *  crossbar.unregister("hello")
+     *      .then(() => console.log("great success!"))
+     *      .catch(console.log);
+     *
+     *  @example <caption>Unregister multiple RPCs:</caption>
+     *  //Assuming we have previously connected and registered the RPCs with the given names
+     *  crossbar.unregister(["hello", "bye"])
+     *      .then(() => console.log("great success!"))
+     *      .catch(console.log);
      */
     const unregister = function ( args ) {
         if ( Array.isArray( args ) )
@@ -243,11 +334,33 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function call
-     *  @param    {string}    rpcName description
-     *  @param    {...Object} args    description
-     *  @returns  {Promise}           description
+     *  @param    {string}    rpcName The name of the RPC we wish to call.
+     *  @param    {...Object} args    Variable number of arguments we wish to
+     *                                pass.
+     *  @returns  {Promise}
      *
-     *  @description description
+     *  @description  Calls the RPC with the given name, providing the given
+     *                arguments. Resolves if it succeeds, rejects otherwise.
+     *
+     *  @example <caption>Call an RPC with no arguments:</caption>
+     *  //Assuming we have previously connected and registered the RPC "hello"
+     *
+     *  const hello = () => {
+     *      console.log("Hello World");
+     *  };
+     *
+     *  crossbar.call("hello")
+     *      .then(() => console.log("great success!"))
+     *      .catch(console.log);
+     *
+     *  @example <caption>Call an RPC with multiple arguments:</caption>
+     *  //Assuming we have previously connected and registered the RPC "add"
+     *
+     *  const add = (n1, n2) => n1 + n2;
+     *
+     *  crossbar.call("add", 1, 2)
+     *      .then(sum => console.log(`sum is: ${sum}`))
+     *      .catch(console.log);
      */
     const call = function ( rpcName, ...args ) {
         return getSession().call( rpcName, args, options.call );
@@ -256,39 +369,62 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function getOpts
-     *  @returns {type}  description
+     *  @returns  {options}
      *
-     *  @description  description
+     *  @description  Returns a clone of the options object.
+     *
+     *  @example <caption>Get a clone of the options object:</caption>
+     *  let opts = crossbar.getOpts();
+     *  opts = {};  //this wont alter the object being used in crossbarjs
      */
     const getOpts = function () {
         return Object.assign( {}, options );
     };
 
-
     /**
      *  @public
      *  @function setOpts
-     *  @param    {type}  newOpts description
-     *  @returns  {type}          description
+     *  @param    {Object}  newOpts The options we want to add.
      *
-     *  @description  description
+     *  @description  Concatenates the given options object with the current
+     *                one. This is the only way to change the <code>options</code>
+     *                object.
+     *
+     *  @see {options}
+     *
+     *  @example <caption>Add publish parameters to the options object:</caption>
+     *  crossbar.setOpts({
+     *      publish: { some options }
+     *  });
+     *  console.log(JSON.stringify(crossbar.getOpts()));
+     *  //will print
+     *  //{
+     *  //  connect: {
+     *  //    "url": "ws://localhost:8080/ws",
+     *  //    "realm": "realm1"
+     *  //  },
+     *  //  publish: { some options },
+     *  //  subscribe: {},
+     *  //  call: {},
+     *  //  register: {}
+     *  //}
      */
     const setOpts = function ( newOpts ) {
-        options = newOpts;
+        Object.assign( options, newOpts );
     };
 
 
     /**
      *  @public
      *  @function setOptsDefault
-     *  @returns  {type}  description
      *
-     *  @description  description
+     *  @description  Resets the options object to its default state.
+     *
+     *  @see  {options}
      */
     const setOptsDefault = function () {
-        setOpts( DEFAULT_OPTS );
+        options = Object.assign( {}, DEFAULT_OPTS );
     };
-
 
     /**
      *  @public
@@ -332,7 +468,6 @@ const crossbarFacade = () => {
     };
 
     const deCrossbarify = callback => args => callback.call( null, ...args );
-
 
     /**
      *  @public

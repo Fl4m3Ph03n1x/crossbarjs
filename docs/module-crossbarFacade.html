@@ -174,7 +174,8 @@
 
     
     <div class="description">
-        description
+        Calls the RPC with the given name, providing the given
+               arguments. Resolves if it succeeds, rejects otherwise.
     </div>
     
 
@@ -236,7 +237,7 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The name of the RPC we wish to call.</td>
         </tr>
 
     
@@ -270,7 +271,8 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">Variable number of arguments we wish to
+                               pass.</td>
         </tr>
 
     
@@ -333,10 +335,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -354,6 +352,34 @@
 
 
         
+
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Call an RPC with no arguments:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected and registered the RPC &quot;hello&quot;
+
+ const hello = () =&gt; {
+     console.log(&quot;Hello World&quot;);
+ };
+
+ crossbar.call(&quot;hello&quot;)
+     .then(() =&gt; console.log(&quot;great success!&quot;))
+     .catch(console.log);
+
+ </pre>
+
+        <p class="code-caption">Call an RPC with multiple arguments:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected and registered the RPC &quot;add&quot;
+
+ const add = (n1, n2) =&gt; n1 + n2;
+
+ crossbar.call(&quot;add&quot;, 1, 2)
+     .then(sum =&gt; console.log(&#x60;sum is: ${sum}&#x60;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -662,6 +688,22 @@
  const connectParams = {url: &quot;myURL&quot;, realm: &quot;Lovecraft&quot;};
  crossbar.connect(connectParams)
    .then(() =&gt; console.log(&quot;Great Success!&quot;))
+   .catch(console.log);
+
+ </pre>
+
+        <p class="code-caption">Additionally, you may also change the "options.connect":</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+ const crossbar  = crossbarjs();
+
+ crossbar.setOpts({
+   connect: { url: &quot;myURL&quot;, realm: &quot;Lovecraft&quot; }
+ });
+
+ crossbar.connect()
+   .then(() =&gt; console.log(&quot;Great Success!&quot;))
    .catch(console.log);</pre>
 
 
@@ -803,7 +845,7 @@
 
     
     <div class="description">
-        description
+        Returns the current autobahn.Connection object.
     </div>
     
 
@@ -849,6 +891,13 @@
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connections">autobahn-js connections</a></li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -868,10 +917,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -880,7 +925,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type">Connection</span>
 
 
 
@@ -889,6 +934,15 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Using a connection:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
+ const conn = crossbar.getConnection();</pre>
+
 
     
 </dd>
@@ -905,7 +959,7 @@
 
     
     <div class="description">
-        description
+        Returns a clone of the options object.
     </div>
     
 
@@ -970,10 +1024,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -982,7 +1032,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type"><a href="global.html#options">options</a></span>
 
 
 
@@ -991,6 +1041,16 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Get a clone of the options object:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
+
+ console.log(JSON.stringify(crossbar.getOpts()));</pre>
+
 
     
 </dd>
@@ -1007,7 +1067,9 @@
 
     
     <div class="description">
-        description
+        Returns the current autobahn.Session object. Ideally you
+               shouldn't need to use it with the current interface, but
+               in case you need you can have direct access to it.
     </div>
     
 
@@ -1053,6 +1115,13 @@
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#sessions">autobahn-js sessions</a></li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -1072,10 +1141,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -1084,7 +1149,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type">Session</span>
 
 
 
@@ -1093,6 +1158,16 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Using a session:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
+ const session = crossbar.getSession();
+ console.log(&#x60;Session id is: ${session.id}&#x60;);</pre>
+
 
     
 </dd>
@@ -1305,7 +1380,10 @@
 
     
     <div class="description">
-        description
+        Registers the given RPCs, biinding each RPC to a name. It
+               can either register a single RPC, or an array of RPC
+               objects. Resolves if all RPCs were registered successfully
+               or rejects if one of them fails.
     </div>
     
 
@@ -1360,7 +1438,10 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">It can either receive two arguments,
+                                   a string and a function, to register
+                                   one RPC, or it can receive an array of
+                                   RPC objects, to register them all.</td>
         </tr>
 
     
@@ -1423,10 +1504,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -1435,7 +1512,7 @@
     </dt>
     <dd>
         
-<span class="param-type">type</span>
+<span class="param-type">Promise</span>
 
 
 
@@ -1444,6 +1521,43 @@
 
 
         
+
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Registering a single RPC:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
+ const myHello = () =&gt; {
+     console.log(&quot;Hello World&quot;);
+ }
+
+ crossbar.register(&quot;hello&quot;, myHello)
+     .then(() =&gt; console.log(&quot;great success!&quot;))
+     .catch(console.log);
+
+ </pre>
+
+        <p class="code-caption">Registering a multiple RPCs:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
+ const myHello = () =&gt; {
+     console.log(&quot;Hello World&quot;);
+ }
+
+ const myGoodbye = () =&gt; {
+     console.log(&quot;Goodbye World!&quot;);
+ };
+
+ const RPCs = [
+     { name: &quot;hello&quot; , func: myHello   },
+     { name: &quot;bye&quot;   , func: myGoodbye }
+ ];
+
+ crossbar.register(RPCs)
+     .then(() =&gt; console.log(&quot;great success!&quot;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -1460,7 +1574,9 @@
 
     
     <div class="description">
-        description
+        Concatenates the given options object with the current
+               one. This is the only way to change the <code>options</code>
+               object.
     </div>
     
 
@@ -1501,7 +1617,7 @@
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">Object</span>
 
 
 
@@ -1512,7 +1628,7 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The options we want to add.</td>
         </tr>
 
     
@@ -1556,6 +1672,13 @@
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li>{<a href="global.html#options">options</a>}</li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -1572,30 +1695,28 @@
     
 
     
-    <h5>Returns:</h5>
+
     
-            
-<div class="param-desc">
-    description
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
+        <h5>Example</h5>
         
-<span class="param-type">type</span>
+        <p class="code-caption">Add publish parameters to the options object:</p>
+    
+    <pre class="sunlight-highlight-javascript">crossbar.setOpts({
+     publish: { some options }
+ });
+ console.log(JSON.stringify(crossbar.getOpts()));
+ //will print
+ //{
+ //  connect: {
+ //    &quot;url&quot;: &quot;ws://localhost:8080/ws&quot;,
+ //    &quot;realm&quot;: &quot;realm1&quot;
+ //  },
+ //  publish: { some options },
+ //  subscribe: {},
+ //  call: {},
+ //  register: {}
+ //}</pre>
 
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -1612,7 +1733,7 @@
 
     
     <div class="description">
-        description
+        Resets the options object to its default state.
     </div>
     
 
@@ -1658,6 +1779,13 @@
 	
 
 	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li>{<a href="global.html#options">options</a>}</li>
+			</ul>
+	</dd>
+	
 
 	
 </dl>
@@ -1674,30 +1802,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    description
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">type</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -1890,7 +1994,10 @@
 
     
     <div class="description">
-        description
+        Unregisters the RPC with the given name, or all the RPCs
+               with the names provided in the array. Returns a promise
+               once all RPCs have be unregistered successfully or rejects
+               if one of them fails.
     </div>
     
 
@@ -1945,7 +2052,8 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The name of a single RPC to unregister
+                                   or an array of RPC names to unregister.</td>
         </tr>
 
     
@@ -2008,10 +2116,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -2029,6 +2133,26 @@
 
 
         
+
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Unregister a single RPC:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected and registered &quot;hello&quot;
+ crossbar.unregister(&quot;hello&quot;)
+     .then(() =&gt; console.log(&quot;great success!&quot;))
+     .catch(console.log);
+
+ </pre>
+
+        <p class="code-caption">Unregister multiple RPCs:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected and registered the RPCs with the given names
+ crossbar.unregister([&quot;hello&quot;, &quot;bye&quot;])
+     .then(() =&gt; console.log(&quot;great success!&quot;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -2235,7 +2359,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-23T09:02:15+02:00
+		on 2017-06-23T12:25:21+02:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
