@@ -8,7 +8,7 @@ Facade on top on autobahnjs to simplify crossbar actions and calls.
 
 # How
 
-Following are instructions on how to intsall and use heartbeatjs. For more information about the project you can check the GitHub page:
+Following are instructions on how to intsall and use `crossbarjs`. For more information about the project you can check the GitHub page:
 
 heartbeastjs Github
 And for questions you can ask in the issues page:
