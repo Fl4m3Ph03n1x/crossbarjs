@@ -58,6 +58,23 @@ const crossbarFacade = () => {
      *                resolve once a connection is successfully open.
      *
      *  @see          {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|autobahn-js connection options}
+     *
+     *  @example  <caption>Creates a connection with the default parameters:</caption>
+     *  const crossbarjs = require("crossbarjs");
+     *
+     *  const crossbar  = crossbarjs();
+     *  crossbar.connect()
+     *    .then(() => console.log("Great Success!"))
+     *    .catch(console.log);
+     *
+     *  @example  <caption>Creates a connections with custom parameters:</caption>
+     *  const crossbarjs = require("crossbarjs");
+     *
+     *  const crossbar  = crossbarjs();
+     *  const connectParams = {url: "myURL", realm: "Lovecraft"};
+     *  crossbar.connect(connectParams)
+     *    .then(() => console.log("Great Success!"))
+     *    .catch(console.log);
      */
     const connect = function ( connectOpts = Object.assign( {}, DEFAULT_OPTS.connect ) ) {
         return new Promise( resolve => {
@@ -72,7 +89,25 @@ const crossbarFacade = () => {
      *  @function disconnect
      *  @returns {Promise}
      *
-     *  @description     Promise
+     *  @description  Closes the crossbar connection. Resolves once the
+     *                connection is closed.
+     *
+     *  @example <caption>Simply disconnect:</caption>
+     *
+     *  //imagine we have previously connected
+     *  crossbar.disconnect()
+     *    .then(() => console.log("disconnected!"))
+     *    .catch(console.log);
+     *
+     *  @example <caption>Disconnect after connecting:</caption>
+     *  const crossbarjs = require("crossbarjs");
+     *
+     *  const crossbar  = crossbarjs();
+     *  crossbar.connect()
+     *    .then(() => console.log("connected!"))
+     *    .then(crossbar.disconnect)
+     *    .then(() => console.log("disconnected!"))
+     *    .catch(console.log);
      */
     const disconnect = function () {
         return new Promise( resolve => {
@@ -91,7 +126,6 @@ const crossbarFacade = () => {
     const getSession = function () {
         return connection.session;
     };
-
 
     /**
      *  @public
