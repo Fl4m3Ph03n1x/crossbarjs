@@ -476,6 +476,25 @@ const crossbarFacade = () => {
         } );
     };
 
+    /**
+     * @private
+     * @function  deCrossbarify
+     * @param     {function}  callback  The function with the actual parameters.
+     * @returns   {function}
+     *
+     * @description <p>
+       *              To register and subscribe to crossbar events, you either
+       *              need to have all arguments in an array, or in a object. This
+       *              approach is counter intuitive and cumbersome, and many
+       *              beginners have issues with it.
+       *            </p>
+       *            <p>
+       *              This function takes the array argument, and spreads it to
+       *              the given function. This way people can have functions with
+       *              all the arguments listed as subscribers and RPCs. The code
+       *              is thus cleaner and easier to reason about.
+     *              </p>
+     */
     const deCrossbarify = callback => args => callback.call( null, ...args );
 
     /**
