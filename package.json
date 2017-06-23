@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "NODE_ENV=test nyc mocha --reporter spec test/*_spec.js || true",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdocConf.json -t ./node_modules/ink-docstrap/template ./src/**.js -d ./docs -R ./docs/DOCS_README.md"
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdocConf.json -t ./node_modules/ink-docstrap/template ./src/**.js -d ./docs -R ./docs/DOCS_README.md",
+    "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov -t f800c87f-1e35-444e-be42-36211e1538b2"
   },
   "repository": {
     "type": "git",
