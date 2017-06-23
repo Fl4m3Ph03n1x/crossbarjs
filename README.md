@@ -66,15 +66,15 @@ For additional information on the API, feel free to check the [crossbarjs home p
 
 Connect and publish a message:
 
-        const crossbarjs = require("crossbarjs");
+    const crossbarjs = require("crossbarjs");
 
-        const crossbar  = crossbarjs();
+    const crossbar  = crossbarjs();
 
-        crossbar.connect()
-            .then(() => {
-                crossbar.publish("myTopic", "arg1", "arg2");
-            })
-            .catch(console.log);
+    crossbar.connect()
+        .then(() => {
+            crossbar.publish("myTopic", "arg1", "arg2");
+        })
+        .catch(console.log);
 
 Subscribe to a topic:
 
@@ -85,6 +85,36 @@ Subscribe to a topic:
     crossbar.connect()
         .then(() => {
             const print = (str1, str2) => console.log(`str1 is ${str1}, str2 is ${str2}`);
-            crossbar.subscribe("myTopic", print);
+            return crossbar.subscribe("myTopic", print);
         })
+        .catch(console.log);
+
+Register a bunch of RPCs:
+
+    const crossbarjs = require("crossbarjs");
+
+    const crossbar  = crossbarjs();
+        //after connecting
+        const print = (str1, str2) => console.log(`str1 is ${str1}, str2 is ${str2}`);
+        const add3 = (n1, n2, n3) => n1 + n2 + n3;
+
+        crossbar.register([
+            { "print": func: print },
+            { "addThreeNumbers" : func: add3 }
+        ])
+        .then(() => console.log("Register successful"))
+        .catch(console.log);
+
+Unregister a bunch of RPCs:
+
+    //after connecting and registering
+    crossbar.unregister("print", "addThreeNumbers")
+        .then(() => console.log("Unregister successful"))
+        .catch(console.log);
+
+Unregister a bunch of RPCs:
+
+    //after connecting and registering
+    crossbar.call("addThreeNumbers", 1, 2, 3)
+        .then(res => console.log(res))
         .catch(console.log);

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test nyc mocha --reporter spec test/*_spec.js || true",
-    "doc": "./node_modules/.bin/jsdoc -c ./jsdocConf.json ./src/**.js -d ./docs -t ./node_modules/ink-docstrap/template -R ./docs/DOCS_README.md"
+    "doc": "./node_modules/.bin/jsdoc -c ./jsdocConf.json -t ./node_modules/ink-docstrap/template ./src/**.js -d ./docs -R ./docs/DOCS_README.md"
   },
   "repository": {
     "type": "git",

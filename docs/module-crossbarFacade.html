@@ -4,23 +4,23 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: crossbarFacade</title>
+	<title>DocStrap Module: crossbarFacade</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
 
 </head>
 
 <body>
 
-<div class="navbar navbar-default navbar-fixed-top ">
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
 <div class="container">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="index.html">Documentation</a>
+		<a class="navbar-brand" href="index.html">DocStrap</a>
 		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -84,9 +84,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Encapsulates crossbar publish/subscribe and
-           register/unregister/call functionality into a facade, easier to
-           use and reason about.</div>
+            <div class="description"><p>Encapsulates crossbar publish/subscribe and<br>           register/unregister/call functionality into a facade, easier to<br>           use and reason about.</p></div>
         
 
         
@@ -134,6 +132,16 @@
 
 
 	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-26">line 26</a>
+			</li>
+		</ul>
+	</dd>
+	
 
 	
 
@@ -174,8 +182,7 @@
 
     
     <div class="description">
-        Calls the RPC with the given name, providing the given
-               arguments. Resolves if it succeeds, rejects otherwise.
+        <p>Calls the RPC with the given name, providing the given<br>               arguments. Resolves if it succeeds, rejects otherwise.</p>
     </div>
     
 
@@ -237,7 +244,7 @@
 
             
 
-            <td class="description last">The name of the RPC we wish to call.</td>
+            <td class="description last"><p>The name of the RPC we wish to call.</p></td>
         </tr>
 
     
@@ -271,8 +278,7 @@
 
             
 
-            <td class="description last">Variable number of arguments we wish to
-                               pass.</td>
+            <td class="description last"><p>Variable number of arguments we wish to<br>                               pass.</p></td>
         </tr>
 
     
@@ -311,6 +317,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-326">line 326</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -396,8 +412,7 @@
 
     
     <div class="description">
-        Connects this instance to the given direction. Will only
-               resolve once a connection is successfully open.
+        <p>Connects this instance to the given direction. Will only<br>               resolve once a connection is successfully open.</p>
     </div>
     
 
@@ -461,14 +476,7 @@
 
             
 
-            <td class="description last">Connection object with the
-                                     options to connect.
-                                     The provided Object must have both
-                                     an <code>url</code> and a
-                                     <code>realm</code> properties to
-                                     properly connect or else it fails.
-                                     If no  object is passed, the
-                                     function will use the default object.
+            <td class="description last"><p>Connection object with the<br>                                     options to connect.<br>                                     The provided Object must have both<br>                                     an <code>url</code> and a<br>                                     <code>realm</code> properties to<br>                                     properly connect or else it fails.<br>                                     If no  object is passed, the<br>                                     function will use the default object.</p>
                 <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
 
@@ -531,7 +539,7 @@
                 </td>
             
 
-            <td class="description last">The connection 'url' as described in autobahn connection options.</td>
+            <td class="description last"><p>The connection 'url' as described in autobahn connection options.</p></td>
         </tr>
 
     
@@ -571,7 +579,7 @@
                 </td>
             
 
-            <td class="description last">The connection 'realm' as described in autobahn connection options.</td>
+            <td class="description last"><p>The connection 'realm' as described in autobahn connection options.</p></td>
         </tr>
 
     
@@ -617,6 +625,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-54">line 54</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -722,8 +740,7 @@
 
     
     <div class="description">
-        Closes the crossbar connection. Resolves once the
-               connection is closed.
+        <p>Closes the crossbar connection. Resolves once the<br>               connection is closed.</p>
     </div>
     
 
@@ -764,6 +781,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-112">line 112</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -845,7 +872,7 @@
 
     
     <div class="description">
-        Returns the current autobahn.Connection object.
+        <p>Returns the current autobahn.Connection object.</p>
     </div>
     
 
@@ -886,6 +913,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-164">line 164</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -959,7 +996,7 @@
 
     
     <div class="description">
-        Returns a clone of the options object.
+        <p>Returns a clone of the options object.</p>
     </div>
     
 
@@ -1000,6 +1037,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-361">line 361</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1066,9 +1113,7 @@
 
     
     <div class="description">
-        Returns the current autobahn.Session object. Ideally you
-               shouldn't need to use it with the current interface, but
-               in case you need you can have direct access to it.
+        <p>Returns the current autobahn.Session object. Ideally you<br>               shouldn't need to use it with the current interface, but<br>               in case you need you can have direct access to it.</p>
     </div>
     
 
@@ -1109,6 +1154,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-144">line 144</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1183,8 +1238,7 @@
 
     
     <div class="description">
-        Publishes the given topic with the given list of variable
-               parameters. Resolves if it succeeds, rejects otherwise.
+        <p>Publishes the given topic with the given list of variable<br>               parameters. Resolves if it succeeds, rejects otherwise.</p>
     </div>
     
 
@@ -1246,7 +1300,7 @@
 
             
 
-            <td class="description last">The topic of the message.</td>
+            <td class="description last"><p>The topic of the message.</p></td>
         </tr>
 
     
@@ -1280,8 +1334,7 @@
 
             
 
-            <td class="description last">The parameters that the subscribed
-                               functions will receive.</td>
+            <td class="description last"><p>The parameters that the subscribed<br>                               functions will receive.</p></td>
         </tr>
 
     
@@ -1320,6 +1373,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-421">line 421</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1388,10 +1451,7 @@
 
     
     <div class="description">
-        Registers the given RPCs, biinding each RPC to a name. It
-               can either register a single RPC, or an array of RPC
-               objects. Resolves if all RPCs were registered successfully
-               or rejects if one of them fails.
+        <p>Registers the given RPCs, biinding each RPC to a name. It<br>               can either register a single RPC, or an array of RPC<br>               objects. Resolves if all RPCs were registered successfully<br>               or rejects if one of them fails.</p>
     </div>
     
 
@@ -1435,7 +1495,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;RPC></span>
+<span class="param-type">Array.&lt;<a href="global.html#RPC">RPC</a>></span>
 
 
 
@@ -1446,10 +1506,7 @@
 
             
 
-            <td class="description last">It can either receive two arguments,
-                                   a string and a function, to register
-                                   one RPC, or it can receive an array of
-                                   RPC objects, to register them all.</td>
+            <td class="description last"><p>It can either receive two arguments,<br>                                   a string and a function, to register<br>                                   one RPC, or it can receive an array of<br>                                   RPC objects, to register them all.</p></td>
         </tr>
 
     
@@ -1488,6 +1545,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-181">line 181</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1582,9 +1649,7 @@
 
     
     <div class="description">
-        Concatenates the given options object with the current
-               one. This is the only way to change the <code>options</code>
-               object.
+        <p>Concatenates the given options object with the current<br>               one. This is the only way to change the <code>options</code><br>               object.</p>
     </div>
     
 
@@ -1636,7 +1701,7 @@
 
             
 
-            <td class="description last">The options we want to add.</td>
+            <td class="description last"><p>The options we want to add.</p></td>
         </tr>
 
     
@@ -1675,6 +1740,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-376">line 376</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1741,7 +1816,7 @@
 
     
     <div class="description">
-        Resets the options object to its default state.
+        <p>Resets the options object to its default state.</p>
     </div>
     
 
@@ -1782,6 +1857,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-409">line 409</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -1826,9 +1911,7 @@
 
     
     <div class="description">
-        Subscribes to the given topic, executing the function
-               every time crossbar receives a message. Resolves if the
-               subscription was successful, rejects otherwise.
+        <p>Subscribes to the given topic, executing the function<br>               every time crossbar receives a message. Resolves if the<br>               subscription was successful, rejects otherwise.</p>
     </div>
     
 
@@ -1880,7 +1963,7 @@
 
             
 
-            <td class="description last">The topic to wich we want to subscribe.</td>
+            <td class="description last"><p>The topic to wich we want to subscribe.</p></td>
         </tr>
 
     
@@ -1904,8 +1987,7 @@
 
             
 
-            <td class="description last">The function to execute every time we
-                                 receive a message.</td>
+            <td class="description last"><p>The function to execute every time we<br>                                 receive a message.</p></td>
         </tr>
 
     
@@ -1944,6 +2026,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-442">line 442</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -2014,10 +2106,7 @@
 
     
     <div class="description">
-        Unregisters the RPC with the given name, or all the RPCs
-               with the names provided in the array. Returns a promise
-               once all RPCs have be unregistered successfully or rejects
-               if one of them fails.
+        <p>Unregisters the RPC with the given name, or all the RPCs<br>               with the names provided in the array. Returns a promise<br>               once all RPCs have be unregistered successfully or rejects<br>               if one of them fails.</p>
     </div>
     
 
@@ -2081,7 +2170,7 @@
 
             
 
-            <td class="description last">The names of the RPCs to unregister</td>
+            <td class="description last"><p>The names of the RPCs to unregister</p></td>
         </tr>
 
     
@@ -2120,6 +2209,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-268">line 268</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -2197,8 +2296,7 @@
 
     
     <div class="description">
-        Unsubscribes from the given topic. Resolves if successful,
-               rejects otherwise.
+        <p>Unsubscribes from the given topic. Resolves if successful,<br>               rejects otherwise.</p>
     </div>
     
 
@@ -2250,7 +2348,7 @@
 
             
 
-            <td class="description last">The topic to which we want to unsubscribe.</td>
+            <td class="description last"><p>The topic to which we want to unsubscribe.</p></td>
         </tr>
 
     
@@ -2289,6 +2387,16 @@
 
 
 
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-501">line 501</a>
+			</li>
+		</ul>
+	</dd>
 	
 
 	
@@ -2392,10 +2500,14 @@
 <footer>
 
 
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-23T12:56:21+02:00
+		on Fri Jun 23rd 2017
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -2441,7 +2553,7 @@ $( function () {
 	} );
 
 	Sunlight.highlightAll( {
-		lineNumbers : false,
+		lineNumbers : true,
 		showMenu : true,
 		enableDoclinks : true
 	} );
