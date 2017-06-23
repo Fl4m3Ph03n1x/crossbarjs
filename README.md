@@ -1,4 +1,6 @@
 
+[![NPM](https://nodei.co/npm/crossbarjs.png)](https://nodei.co/npm/crossbarjs/)
+
 # What
 
 Technically speaking `crossbarjs` is a Facade over [`autobahn-js`](https://github.com/crossbario/autobahn-js).

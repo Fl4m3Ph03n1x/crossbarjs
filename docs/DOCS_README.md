@@ -1,3 +1,4 @@
+[![NPM](https://nodei.co/npm/crossbarjs.png)](https://nodei.co/npm/crossbarjs/)
 
 # What
 
