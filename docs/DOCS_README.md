@@ -99,7 +99,7 @@ Unregister a bunch of RPCs:
         .then(() => console.log("Unregister successful"))
         .catch(console.log);
 
-Unregister a bunch of RPCs:
+Call an RPC:
 
     //after connecting and registering
     crossbar.call("addThreeNumbers", 1, 2, 3)
