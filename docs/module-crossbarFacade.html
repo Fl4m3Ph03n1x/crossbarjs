@@ -1047,9 +1047,8 @@
         
         <p class="code-caption">Get a clone of the options object:</p>
     
-    <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
-
- console.log(JSON.stringify(crossbar.getOpts()));</pre>
+    <pre class="sunlight-highlight-javascript">let opts = crossbar.getOpts();
+ opts = {};  //this wont alter the object being used in crossbarjs</pre>
 
 
     
@@ -1176,7 +1175,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~publish"><span class="type-signature">&lt;inner> </span>publish(topic, message)</h4>
+    <h4 class="name" id="~publish"><span class="type-signature">&lt;inner> </span>publish(topic, params)</h4>
     
     
 </dt>
@@ -1184,7 +1183,8 @@
 
     
     <div class="description">
-        description
+        Publishes the given topic with the given list of variable
+               parameters. Resolves if it succeeds, rejects otherwise.
     </div>
     
 
@@ -1246,14 +1246,14 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The topic of the message.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>message</code></td>
+                <td class="name"><code>params</code></td>
             
 
             <td class="type">
@@ -1280,7 +1280,8 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The parameters that the subscribed
+                               functions will receive.</td>
         </tr>
 
     
@@ -1343,10 +1344,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -1364,6 +1361,17 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Publish a topic:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we are already connected
+ crossbar.publish(&quot;add&quot;, 1, 2)
+     .then(() =&gt; console.log(&quot;Published!&quot;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -1427,7 +1435,7 @@
 <span class="param-type">string</span>
 |
 
-<span class="param-type">Array.&lt;<a href="global.html#RPC">RPC</a>></span>
+<span class="param-type">Array.&lt;RPC></span>
 
 
 
@@ -1538,7 +1546,7 @@
 
  </pre>
 
-        <p class="code-caption">Registering a multiple RPCs:</p>
+        <p class="code-caption">Registering multiple RPCs:</p>
     
     <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
  const myHello = () =&gt; {
@@ -1818,7 +1826,9 @@
 
     
     <div class="description">
-        description
+        Subscribes to the given topic, executing the function
+               every time crossbar receives a message. Resolves if the
+               subscription was successful, rejects otherwise.
     </div>
     
 
@@ -1870,7 +1880,7 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The topic to wich we want to subscribe.</td>
         </tr>
 
     
@@ -1894,7 +1904,8 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The function to execute every time we
+                                 receive a message.</td>
         </tr>
 
     
@@ -1957,10 +1968,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -1978,6 +1985,19 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Subscribe to the topic "add". See <code>publish</code>:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we are already connected
+ const myAdd = (n1, n2) =&gt; n1 + n2;
+
+ crossbar.subscribe(&quot;add&quot;, myAdd);
+     .then(() =&gt; console.log(&quot;Subscribed!&quot;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -2020,6 +2040,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -2039,9 +2061,6 @@
             
                 
 <span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
 
 
 
@@ -2049,11 +2068,20 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
 
             
 
-            <td class="description last">The name of a single RPC to unregister
-                                   or an array of RPC names to unregister.</td>
+            <td class="description last">The names of the RPCs to unregister</td>
         </tr>
 
     
@@ -2149,7 +2177,7 @@
         <p class="code-caption">Unregister multiple RPCs:</p>
     
     <pre class="sunlight-highlight-javascript">//Assuming we have previously connected and registered the RPCs with the given names
- crossbar.unregister([&quot;hello&quot;, &quot;bye&quot;])
+ crossbar.unregister(&quot;hello&quot;, &quot;bye&quot;)
      .then(() =&gt; console.log(&quot;great success!&quot;))
      .catch(console.log);</pre>
 
@@ -2169,7 +2197,8 @@
 
     
     <div class="description">
-        description
+        Unsubscribes from the given topic. Resolves if successful,
+               rejects otherwise.
     </div>
     
 
@@ -2221,7 +2250,7 @@
 
             
 
-            <td class="description last">description</td>
+            <td class="description last">The topic to which we want to unsubscribe.</td>
         </tr>
 
     
@@ -2284,10 +2313,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    description
-</div>
-
 
 
 <dl>
@@ -2305,6 +2330,17 @@
 
 
         
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Unsubscribe to the topic "add". See <code>subscribe</code>:</p>
+    
+    <pre class="sunlight-highlight-javascript">//Assuming we are already connected
+ crossbar.unsubscribe(&quot;add&quot;);
+     .then(() =&gt; console.log(&quot;Unsubscribed!&quot;))
+     .catch(console.log);</pre>
+
 
     
 </dd>
@@ -2359,7 +2395,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-23T12:25:21+02:00
+		on 2017-06-23T12:49:48+02:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

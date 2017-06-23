@@ -156,7 +156,7 @@ describe( "crossbarServer", () => {
     } );
 
     it( "should be able to unregister multiple registered RPCs", done => {
-        server.unregister( [ "concat2", "add2" ] )
+        server.unregister( "concat2", "add2" )
             .then( () => done() )
             .catch( err => done( err ) );
     } );
@@ -170,7 +170,7 @@ describe( "crossbarServer", () => {
     } );
 
     it( "should reject if unregister gets an array with invalid arguments", () => {
-        expect( server.unregister( [ 0, 1 ] ) ).to.be.rejectedWith( Error );
+        expect( server.unregister( 0, 1 ) ).to.be.rejectedWith( Error );
     } );
 
     it( "should reject when crossbar fails to unregister", done => {

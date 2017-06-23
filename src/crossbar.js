@@ -9,9 +9,7 @@ const autobahn = require( "autobahn" );
  *  @type     {Object}
  *  @property {string}    name  The name of the RPC.
  *  @property {function}  func  The function to execute.
- */
-
-/**
+ *
  *  @typedef  options
  *  @type     {Object}
  *  @property {Object}  connect             See {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|connection options}
@@ -203,7 +201,7 @@ const crossbarFacade = () => {
      *      .then(() => console.log("great success!"))
      *      .catch(console.log);
      *
-     *  @example <caption>Registering a multiple RPCs:</caption>
+     *  @example <caption>Registering multiple RPCs:</caption>
      *  //Assuming we have previously connected
      *  const myHello = () => {
      *      console.log("Hello World");
@@ -269,8 +267,7 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function unregister
-     *  @param  {(string|string[])} args  The name of a single RPC to unregister
-     *                                    or an array of RPC names to unregister.
+     *  @param  {...string} args  The names of the RPCs to unregister
      *  @returns {Promise}
      *
      *  @description  Unregisters the RPC with the given name, or all the RPCs
@@ -286,18 +283,12 @@ const crossbarFacade = () => {
      *
      *  @example <caption>Unregister multiple RPCs:</caption>
      *  //Assuming we have previously connected and registered the RPCs with the given names
-     *  crossbar.unregister(["hello", "bye"])
+     *  crossbar.unregister("hello", "bye")
      *      .then(() => console.log("great success!"))
      *      .catch(console.log);
      */
-    const unregister = function ( args ) {
-        if ( Array.isArray( args ) )
-            return unregisterMany( args );
-
-        if ( isString( args ) && arguments.length === 1 )
-            return unregisterOne( args );
-
-        return Promise.reject( new Error( "Unrecognized parameters" ) );
+    const unregister = function ( ...args ) {
+        return unregisterMany( args );
     };
 
     const unregisterOne = function ( name ) {
@@ -429,25 +420,43 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function publish
-     *  @param    {string}    topic   description
-     *  @param    {...Object} message description
-     *  @returns  {Promise}           description
+     *  @param    {string}    topic   The topic of the message.
+     *  @param    {...Object} params  The parameters that the subscribed
+     *                                functions will receive.
+     *  @returns  {Promise}
      *
-     *  @description  description
+     *  @description  Publishes the given topic with the given list of variable
+     *                parameters. Resolves if it succeeds, rejects otherwise.
+     *
+     *  @example <caption>Publish a topic:</caption>
+     *  //Assuming we are already connected
+     *  crossbar.publish("add", 1, 2)
+     *      .then(() => console.log("Published!"))
+     *      .catch(console.log);
      */
-    const publish = function ( topic, ...message ) {
-        return getSession().publish( topic, message, {}, options.publish );
+    const publish = function ( topic, ...params ) {
+        return getSession().publish( topic, params, {}, options.publish );
     };
-
 
     /**
      *  @public
      *  @function subscribe
-     *  @param    {string}    topic     description
-     *  @param    {function}  callback  description
-     *  @returns  {Promise}             description
+     *  @param    {string}    topic     The topic to wich we want to subscribe.
+     *  @param    {function}  callback  The function to execute every time we
+     *                                  receive a message.
+     *  @returns  {Promise}
      *
-     *  @description  description
+     *  @description  Subscribes to the given topic, executing the function
+     *                every time crossbar receives a message. Resolves if the
+     *                subscription was successful, rejects otherwise.
+     *
+     *  @example <caption>Subscribe to the topic "add". See <code>publish</code>:</caption>
+     *  //Assuming we are already connected
+     *  const myAdd = (n1, n2) => n1 + n2;
+     *
+     *  crossbar.subscribe("add", myAdd);
+     *      .then(() => console.log("Subscribed!"))
+     *      .catch(console.log);
      */
     const subscribe = function ( topic, callback ) {
         return new Promise( ( resolve, reject ) => {
@@ -472,10 +481,17 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function unsubscribe
-     *  @param    {string}  topic description
-     *  @returns  {Promise}       description
+     *  @param    {string}  topic The topic to which we want to unsubscribe.
+     *  @returns  {Promise}
      *
-     *  @description  description
+     *  @description  Unsubscribes from the given topic. Resolves if successful,
+     *                rejects otherwise.
+     *
+     *  @example <caption>Unsubscribe to the topic "add". See <code>subscribe</code>:</caption>
+     *  //Assuming we are already connected
+     *  crossbar.unsubscribe("add");
+     *      .then(() => console.log("Unsubscribed!"))
+     *      .catch(console.log);
      */
     const unsubscribe = function ( topic ) {
         return new Promise( ( resolve, reject ) => {
