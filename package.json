@@ -1,6 +1,6 @@
 {
   "name": "crossbarjs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Facade for autobahn.js and crossbar that aims at simpliflying and centralizing its use.",
   "main": "./src/crossbar.js",
   "directories": {
@@ -17,6 +17,7 @@
     "url": "git+https://github.com/Fl4m3Ph03n1x/crossbarjs"
   },
   "keywords": [
+    "crossbarjs",
     "crossbar",
     "autobahn",
     "autobahn-js",

@@ -27,7 +27,7 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.0.2
+ *  @version  1.0.3
  *  @module   crossbarFacade
  *  @desc     Encapsulates crossbar publish/subscribe and
  *            register/unregister/call functionality into a facade, easier to
