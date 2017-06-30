@@ -1,5 +1,3 @@
-"use strict";
-
 const isString = require( "lodash.isstring" );
 const isFunction = require( "lodash.isfunction" );
 const isEmpty = require( "lodash.isempty" );
@@ -27,7 +25,7 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.0.3
+ *  @version  1.0.4
  *  @module   crossbarFacade
  *  @desc     Encapsulates crossbar publish/subscribe and
  *            register/unregister/call functionality into a facade, easier to
@@ -440,7 +438,7 @@ const crossbarFacade = () => {
         //autobahn-js only returns promise under specific circumstances. We
         // fix that here.
         const res = getSession().publish( topic, params, {}, options.publish );
-        return ( !isEmpty( options.publish ) && options.publish !== undefined )
+        return  !isEmpty( options.publish ) && options.publish !== undefined
             ? res :
             Promise.resolve();
     };

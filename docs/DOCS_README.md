@@ -1,4 +1,8 @@
-[![NPM](https://nodei.co/npm/crossbarjs.png)](https://nodei.co/npm/crossbarjs/)
+[![NPM](https://nodei.co/npm/crossbarjs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/obj-watcher/)
+
+[![Build Status](https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs.svg?branch=master)](https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs)
+[![codecov](https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs/branch/master/graph/badge.svg)](https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs)
+[![Dependency Status](https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac/badge.svg)](https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac)
 
 # What
 
@@ -39,8 +43,6 @@ Following are instructions on how to intsall and use `crossbarjs`. For more info
 And for questions you can ask in the issues page:
 
  - [crossbarjs Issues](https://github.com/Fl4m3Ph03n1x/crossbarjs/issues)
-
-For additional information on the API, feel free to check the [crossbarjs home page](https://fl4m3ph03n1x.github.io/crossbarjs/index.html).
 
 ## Install
 

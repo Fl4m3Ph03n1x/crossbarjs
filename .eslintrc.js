@@ -10,27 +10,22 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "no-template-curly-in-string": [ "error" ],
+        "no-extra-parens": [ "error" ],
+        "strict": [ "error" ],
+        "no-iterator": [ "error" ],
+        "no-with": [ "error" ],
+        "no-trailing-spaces": [ "error" ],
+        "eqeqeq": [ "error", "always" ],
+        "indent": [ "error", 4 ],
+        "linebreak-style": [ "error", "unix" ],
+        "quotes": [ "error", "double" ],
+        "semi": [ "error", "always" ],
         "no-console": 0,
-        "no-var": ["error"],
-        "prefer-const": ["error", {
-            "destructuring": "any",
-            "ignoreReadBeforeAssign": false
-    }]
+        "no-var": [ "error" ],
+        "prefer-const": [
+            "error",
+            { "destructuring": "any", "ignoreReadBeforeAssign": false }
+        ]
     }
 };
