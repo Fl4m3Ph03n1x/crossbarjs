@@ -25,7 +25,7 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.0.4
+ *  @version  1.0.5
  *  @module   crossbarFacade
  *  @desc     Encapsulates crossbar publish/subscribe and
  *            register/unregister/call functionality into a facade, easier to
@@ -232,27 +232,6 @@ const crossbarFacade = () => {
         return Promise.reject( new Error( "Unrecognized parameters" ) );
     };
 
-    // const registerOne = function ( name, func ) {
-    //     return new Promise( ( resolve, reject ) => {
-    //         if ( !isString( name ) ) {
-    //             reject( new TypeError( `${name} must be a String.` ) );
-    //             return;
-    //         }
-    //
-    //         if ( !isFunction( func ) ) {
-    //             reject( new TypeError( `${func} must be a Function.` ) );
-    //             return;
-    //         }
-    //
-    //         getSession().register( name, deCrossbarify( func ), options.register )
-    //             .then( registration => {
-    //                 registrationMap.set( name, registration );
-    //                 resolve();
-    //             } )
-    //             .catch( err => reject( err ) );
-    //     } );
-    // };
-
     const registerOne = function ( name, func ) {
         if ( !isString( name ) ) {
             return Promise.reject( new TypeError( `${name} must be a String.` ) );
@@ -308,27 +287,6 @@ const crossbarFacade = () => {
     const unregister = function ( ...args ) {
         return unregisterMany( args );
     };
-
-    // const unregisterOne = function ( name ) {
-    //     return new Promise( ( resolve, reject ) => {
-    //         if ( !isString( name ) ) {
-    //             reject( new TypeError( `${name} must be a String.` ) );
-    //             return;
-    //         }
-    //
-    //         if ( !registrationMap.has( name ) ) {
-    //             reject( new Error( `${name} is not registered.` ) );
-    //             return;
-    //         }
-    //
-    //         getSession().unregister( registrationMap.get( name ) )
-    //             .then( () => {
-    //                 registrationMap.delete( name );
-    //                 resolve();
-    //             } )
-    //             .catch( err => reject( err ) );
-    //     } );
-    // };
 
     const unregisterOne = function ( name ) {
         if ( !isString( name ) ) {
@@ -496,24 +454,6 @@ const crossbarFacade = () => {
      *      .then(() => console.log("Subscribed!"))
      *      .catch(console.log);
      */
-    // const subscribe = function ( topic, callback ) {
-    //     return new Promise( ( resolve, reject ) => {
-    //
-    //         if ( subscritionMap.has( topic ) ) {
-    //             reject( new Error( `Already subscribed to ${topic}` ) );
-    //             return;
-    //         }
-    //
-    //         getSession()
-    //             .subscribe( topic, deCrossbarify( callback ), options.subscribe )
-    //             .then( subscription => {
-    //                 subscritionMap.set( topic, subscription );
-    //                 resolve();
-    //             } )
-    //             .catch( err => reject( err ) );
-    //     } );
-    // };
-
     const subscribe = function ( topic, callback ) {
 
         if ( subscritionMap.has( topic ) ) {
@@ -529,6 +469,27 @@ const crossbarFacade = () => {
         );
     };
 
+    /**
+     * @private
+     * @function  add
+     * @param     {string}    action    A session's function name to execute. In
+     *                                  theory it should have been the function
+     *                                  itself, but since there were some
+     *                                  context issues, I decided to pass the
+     *                                  function's name and then execute it.
+     * @param     {string}    id        The id of the thing we will be adding.
+     * @param     {function}  callback  The function we associate with the given
+     *                                  id.
+     * @param     {Object}    options   Options object for the action.
+     * @param     {Map}       map       The map that will save the association
+     *                                  betwwen the id and the result of the
+     *                                  action.
+     * @returns   {Promise}
+     *
+     * @description   Introduced after codeclimate code quality analysis as a
+     *                a means to remove duplication betwwen regiterOne and
+     *                subscribe, since they both have the same structure.
+     * */
     const add = ( action, id, callback, options, map ) => {
         return getSession()[ action ]( id, callback, options )
             .then( result => {
@@ -536,6 +497,22 @@ const crossbarFacade = () => {
             } );
     };
 
+    /**
+     * @private
+     * @function  add
+     * @param     {string}    action    A session's function name to execute. In
+     *                                  theory it should have been the function
+     *                                  itself, but since there were some
+     *                                  context issues, I decided to pass the
+     *                                  function's name and then execute it.
+     * @param     {string}    id        The id of the thing we will be removing.
+     * @param     {Map}       map       The map containing the id.
+     * @returns   {Promise}
+     *
+     * @description   Introduced after codeclimate code quality analysis as a
+     *                a means to remove duplication betwwen regiterOne and
+     *                subscribe, since they both have the same structure.
+     * */
     const remove = ( action, id, map ) => {
         return getSession()[ action ]( map.get( id ) )
             .then( result => {
@@ -579,22 +556,6 @@ const crossbarFacade = () => {
      *      .then(() => console.log("Unsubscribed!"))
      *      .catch(console.log);
      */
-    // const unsubscribe = function ( topic ) {
-    //     return new Promise( ( resolve, reject ) => {
-    //         if ( !subscritionMap.has( topic ) ) {
-    //             reject( new Error( `Not subscribed to ${topic}` ) );
-    //             return;
-    //         }
-    //
-    //         getSession().unsubscribe( subscritionMap.get( topic ) )
-    //             .then( () => {
-    //                 subscritionMap.delete( topic );
-    //                 resolve();
-    //             } )
-    //             .catch( err => reject( err ) );
-    //     } );
-    // };
-
     const unsubscribe = function ( topic ) {
         if ( !subscritionMap.has( topic ) ) {
             return Promise.reject( new Error( `Not subscribed to ${topic}` ) );
