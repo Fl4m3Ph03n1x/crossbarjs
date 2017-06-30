@@ -232,25 +232,43 @@ const crossbarFacade = () => {
         return Promise.reject( new Error( "Unrecognized parameters" ) );
     };
 
+    // const registerOne = function ( name, func ) {
+    //     return new Promise( ( resolve, reject ) => {
+    //         if ( !isString( name ) ) {
+    //             reject( new TypeError( `${name} must be a String.` ) );
+    //             return;
+    //         }
+    //
+    //         if ( !isFunction( func ) ) {
+    //             reject( new TypeError( `${func} must be a Function.` ) );
+    //             return;
+    //         }
+    //
+    //         getSession().register( name, deCrossbarify( func ), options.register )
+    //             .then( registration => {
+    //                 registrationMap.set( name, registration );
+    //                 resolve();
+    //             } )
+    //             .catch( err => reject( err ) );
+    //     } );
+    // };
+
     const registerOne = function ( name, func ) {
-        return new Promise( ( resolve, reject ) => {
-            if ( !isString( name ) ) {
-                reject( new TypeError( `${name} must be a String.` ) );
-                return;
-            }
+        if ( !isString( name ) ) {
+            return Promise.reject( new TypeError( `${name} must be a String.` ) );
+        }
 
-            if ( !isFunction( func ) ) {
-                reject( new TypeError( `${func} must be a Function.` ) );
-                return;
-            }
+        if ( !isFunction( func ) ) {
+            return Promise.reject( new TypeError( `${func} must be a Function.` ) );
+        }
 
-            getSession().register( name, deCrossbarify( func ), options.register )
-                .then( registration => {
-                    registrationMap.set( name, registration );
-                    resolve();
-                } )
-                .catch( err => reject( err ) );
-        } );
+        return add(
+            "register",
+            name,
+            deCrossbarify( func ),
+            options.register,
+            registrationMap
+        );
     };
 
     const registerMany = async function ( rpcList ) {
@@ -404,7 +422,6 @@ const crossbarFacade = () => {
         Object.assign( options, newOpts );
     };
 
-
     /**
      *  @public
      *  @function setOptsDefault
@@ -438,8 +455,8 @@ const crossbarFacade = () => {
         //autobahn-js only returns promise under specific circumstances. We
         // fix that here.
         const res = getSession().publish( topic, params, {}, options.publish );
-        return  !isEmpty( options.publish ) && options.publish !== undefined
-            ? res :
+        return !isEmpty( options.publish ) && options.publish !== undefined ?
+            res :
             Promise.resolve();
     };
 
@@ -463,22 +480,44 @@ const crossbarFacade = () => {
      *      .then(() => console.log("Subscribed!"))
      *      .catch(console.log);
      */
+    // const subscribe = function ( topic, callback ) {
+    //     return new Promise( ( resolve, reject ) => {
+    //
+    //         if ( subscritionMap.has( topic ) ) {
+    //             reject( new Error( `Already subscribed to ${topic}` ) );
+    //             return;
+    //         }
+    //
+    //         getSession()
+    //             .subscribe( topic, deCrossbarify( callback ), options.subscribe )
+    //             .then( subscription => {
+    //                 subscritionMap.set( topic, subscription );
+    //                 resolve();
+    //             } )
+    //             .catch( err => reject( err ) );
+    //     } );
+    // };
+
     const subscribe = function ( topic, callback ) {
-        return new Promise( ( resolve, reject ) => {
 
-            if ( subscritionMap.has( topic ) ) {
-                reject( new Error( `Already subscribed to ${topic}` ) );
-                return;
-            }
+        if ( subscritionMap.has( topic ) ) {
+            return Promise.reject( new Error( `Already subscribed to ${topic}` ) );
+        }
 
-            getSession()
-                .subscribe( topic, deCrossbarify( callback ), options.subscribe )
-                .then( subscription => {
-                    subscritionMap.set( topic, subscription );
-                    resolve();
-                } )
-                .catch( err => reject( err ) );
-        } );
+        return add(
+            "subscribe",
+            topic,
+            deCrossbarify( callback ),
+            options.subscribe,
+            subscritionMap
+        );
+    };
+
+    const add = ( action, id, callback, options, map ) => {
+        return getSession()[ action ]( id, callback, options )
+            .then( result => {
+                map.set( id, result );
+            } );
     };
 
     /**
