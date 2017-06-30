@@ -309,25 +309,41 @@ const crossbarFacade = () => {
         return unregisterMany( args );
     };
 
+    // const unregisterOne = function ( name ) {
+    //     return new Promise( ( resolve, reject ) => {
+    //         if ( !isString( name ) ) {
+    //             reject( new TypeError( `${name} must be a String.` ) );
+    //             return;
+    //         }
+    //
+    //         if ( !registrationMap.has( name ) ) {
+    //             reject( new Error( `${name} is not registered.` ) );
+    //             return;
+    //         }
+    //
+    //         getSession().unregister( registrationMap.get( name ) )
+    //             .then( () => {
+    //                 registrationMap.delete( name );
+    //                 resolve();
+    //             } )
+    //             .catch( err => reject( err ) );
+    //     } );
+    // };
+
     const unregisterOne = function ( name ) {
-        return new Promise( ( resolve, reject ) => {
-            if ( !isString( name ) ) {
-                reject( new TypeError( `${name} must be a String.` ) );
-                return;
-            }
+        if ( !isString( name ) ) {
+            return Promise.reject( new TypeError( `${name} must be a String.` ) );
+        }
 
-            if ( !registrationMap.has( name ) ) {
-                reject( new Error( `${name} is not registered.` ) );
-                return;
-            }
+        if ( !registrationMap.has( name ) ) {
+            return Promise.reject( new Error( `${name} is not registered.` ) );
+        }
 
-            getSession().unregister( registrationMap.get( name ) )
-                .then( () => {
-                    registrationMap.delete( name );
-                    resolve();
-                } )
-                .catch( err => reject( err ) );
-        } );
+        return remove(
+            "unregister",
+            name,
+            registrationMap
+        );
     };
 
     const unregisterMany = async function ( rpcNamesList ) {
@@ -520,6 +536,13 @@ const crossbarFacade = () => {
             } );
     };
 
+    const remove = ( action, id, map ) => {
+        return getSession()[ action ]( map.get( id ) )
+            .then( result => {
+                map.delete( id, result );
+            } );
+    };
+
     /**
      * @private
      * @function  deCrossbarify
@@ -556,20 +579,32 @@ const crossbarFacade = () => {
      *      .then(() => console.log("Unsubscribed!"))
      *      .catch(console.log);
      */
-    const unsubscribe = function ( topic ) {
-        return new Promise( ( resolve, reject ) => {
-            if ( !subscritionMap.has( topic ) ) {
-                reject( new Error( `Not subscribed to ${topic}` ) );
-                return;
-            }
+    // const unsubscribe = function ( topic ) {
+    //     return new Promise( ( resolve, reject ) => {
+    //         if ( !subscritionMap.has( topic ) ) {
+    //             reject( new Error( `Not subscribed to ${topic}` ) );
+    //             return;
+    //         }
+    //
+    //         getSession().unsubscribe( subscritionMap.get( topic ) )
+    //             .then( () => {
+    //                 subscritionMap.delete( topic );
+    //                 resolve();
+    //             } )
+    //             .catch( err => reject( err ) );
+    //     } );
+    // };
 
-            getSession().unsubscribe( subscritionMap.get( topic ) )
-                .then( () => {
-                    subscritionMap.delete( topic );
-                    resolve();
-                } )
-                .catch( err => reject( err ) );
-        } );
+    const unsubscribe = function ( topic ) {
+        if ( !subscritionMap.has( topic ) ) {
+            return Promise.reject( new Error( `Not subscribed to ${topic}` ) );
+        }
+
+        return remove(
+            "unsubscribe",
+            topic,
+            subscritionMap
+        );
     };
 
     return Object.freeze( {
