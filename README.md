@@ -1,6 +1,13 @@
+<div align="center">
+    <img src="./logos/logo_no_wm.png">
+</div>
+<div align="center">
+
 [![NPM](https://nodei.co/npm/crossbarjs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/crossbarjs/)
 
 [![Build Status](https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs.svg?branch=master)](https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs) [![codecov](https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs/branch/master/graph/badge.svg)](https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs) [![Dependency Status](https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac/badge.svg)](https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac) [![Code Climate](https://codeclimate.com/github/Fl4m3Ph03n1x/crossbarjs/badges/gpa.svg)](https://codeclimate.com/github/Fl4m3Ph03n1x/crossbarjs) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+
+</div>
 
 # What
 

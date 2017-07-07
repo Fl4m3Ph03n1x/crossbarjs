@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="../logos/logo_no_wm.png">
+    <img src="https://raw.githubusercontent.com/Fl4m3Ph03n1x/crossbarjs/master/logos/logo_no_wm.png">
 </div>
 <div align="center">
 

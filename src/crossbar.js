@@ -25,11 +25,10 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.0.5
+ *  @version  1.0.6
  *  @module   crossbarFacade
- *  @desc     Encapsulates crossbar publish/subscribe and
- *            register/unregister/call functionality into a facade, easier to
- *            use and reason about.
+ *  @desc
+ *  Encapsulates crossbar publish/subscribe and register/unregister/call functionality into a facade, easier to use and reason about.
  */
 const crossbarFacade = () => {
 
@@ -65,8 +64,8 @@ const crossbarFacade = () => {
      *  @param    {string}  [connectOpts.realm = "realm1"]                The connection 'realm' as described in autobahn connection options.
      *  @returns  {Promise}
      *
-     *  @description  Connects this instance to the given direction. Will only
-     *                resolve once a connection is successfully open.
+     *  @description
+     *  Connects this instance to the given direction. Will only resolve once a connection is successfully open.
      *
      *  @see          {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|autobahn-js connection options}
      *
@@ -113,8 +112,8 @@ const crossbarFacade = () => {
      *  @function disconnect
      *  @returns {Promise}
      *
-     *  @description  Closes the crossbar connection. Resolves once the
-     *                connection is closed.
+     *  @description
+     *  Closes the crossbar connection. Resolves once the connection is closed.
      *
      *  @example <caption>Simply disconnect:</caption>
      *
@@ -145,9 +144,9 @@ const crossbarFacade = () => {
      *  @function getSession
      *  @returns {Session}
      *
-     *  @description  Returns the current autobahn.Session object. Ideally you
-     *                shouldn't need to use it with the current interface, but
-     *                in case you need you can have direct access to it.
+     *  @description
+     *  Returns the current autobahn.Session object.
+     *  Ideally you shouldn't need to use it with the current interface, but in case you need you can have direct access to it.
      *
      *  @see {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#sessions|autobahn-js sessions}
      *
@@ -186,10 +185,10 @@ const crossbarFacade = () => {
      *                                    RPC objects, to register them all.
      *  @returns  {Promise}
      *
-     *  @description  Registers the given RPCs, biinding each RPC to a name. It
-     *                can either register a single RPC, or an array of RPC
-     *                objects. Resolves if all RPCs were registered successfully
-     *                or rejects if one of them fails.
+     *  @description
+     *  Registers the given RPCs, biinding each RPC to a name.
+     *  It can either register a single RPC, or an array of RPC objects.
+     *  Resolves if all RPCs were registered successfully or rejects if one of them fails.
      *
      *  @example <caption>Registering a single RPC:</caption>
      *  //Assuming we have previously connected
@@ -267,10 +266,9 @@ const crossbarFacade = () => {
      *  @param  {...string} args  The names of the RPCs to unregister
      *  @returns {Promise}
      *
-     *  @description  Unregisters the RPC with the given name, or all the RPCs
-     *                with the names provided in the array. Returns a promise
-     *                once all RPCs have be unregistered successfully or rejects
-     *                if one of them fails.
+     *  @description
+     *  Unregisters the RPC with the given name, or all the RPCs with the names provided in the array.
+     *  Returns a promise once all RPCs have be unregistered successfully or rejects if one of them fails.
      *
      *  @example <caption>Unregister a single RPC:</caption>
      *  //Assuming we have previously connected and registered "hello"
@@ -322,8 +320,9 @@ const crossbarFacade = () => {
      *                                pass.
      *  @returns  {Promise}
      *
-     *  @description  Calls the RPC with the given name, providing the given
-     *                arguments. Resolves if it succeeds, rejects otherwise.
+     *  @description
+     *  Calls the RPC with the given name, providing the given arguments.
+     *  Resolves if it succeeds, rejects otherwise.
      *
      *  @example <caption>Call an RPC with no arguments:</caption>
      *  //Assuming we have previously connected and registered the RPC "hello"
@@ -369,9 +368,9 @@ const crossbarFacade = () => {
      *  @function setOpts
      *  @param    {Object}  newOpts The options we want to add.
      *
-     *  @description  Concatenates the given options object with the current
-     *                one. This is the only way to change the <code>options</code>
-     *                object.
+     *  @description
+     *  Concatenates the given options object with the current one.
+     *  This is the only way to change the <code>options</code> object.
      *
      *  @see {options}
      *
@@ -416,8 +415,9 @@ const crossbarFacade = () => {
      *                                functions will receive.
      *  @returns  {Promise}
      *
-     *  @description  Publishes the given topic with the given list of variable
-     *                parameters. Resolves if it succeeds, rejects otherwise.
+     *  @description
+     *  Publishes the given topic with the given list of variable parameters.
+     *  Resolves if it succeeds, rejects otherwise.
      *
      *  @example <caption>Publish a topic:</caption>
      *  //Assuming we are already connected
@@ -442,9 +442,9 @@ const crossbarFacade = () => {
      *                                  receive a message.
      *  @returns  {Promise}
      *
-     *  @description  Subscribes to the given topic, executing the function
-     *                every time crossbar receives a message. Resolves if the
-     *                subscription was successful, rejects otherwise.
+     *  @description
+     *  Subscribes to the given topic, executing the function every time crossbar receives a message.
+     *  Resolves if the subscription was successful, rejects otherwise.
      *
      *  @example <caption>Subscribe to the topic "add". See <code>publish</code>:</caption>
      *  //Assuming we are already connected
@@ -486,9 +486,8 @@ const crossbarFacade = () => {
      *                                  action.
      * @returns   {Promise}
      *
-     * @description   Introduced after codeclimate code quality analysis as a
-     *                a means to remove duplication betwwen regiterOne and
-     *                subscribe, since they both have the same structure.
+     * @description
+     * Introduced after codeclimate code quality analysis as a means to remove duplication betwwen regiterOne and subscribe, since they both have the same structure.
      * */
     const add = ( action, id, callback, options, map ) => {
         return getSession()[ action ]( id, callback, options )
@@ -509,9 +508,8 @@ const crossbarFacade = () => {
      * @param     {Map}       map       The map containing the id.
      * @returns   {Promise}
      *
-     * @description   Introduced after codeclimate code quality analysis as a
-     *                a means to remove duplication betwwen regiterOne and
-     *                subscribe, since they both have the same structure.
+     * @description
+     * Introduced after codeclimate code quality analysis as a means to remove duplication betwwen regiterOne and subscribe, since they both have the same structure.
      * */
     const remove = ( action, id, map ) => {
         return getSession()[ action ]( map.get( id ) )
@@ -526,18 +524,16 @@ const crossbarFacade = () => {
      * @param     {function}  callback  The function with the actual parameters.
      * @returns   {function}
      *
-     * @description <p>
-     *              To register and subscribe to crossbar events, you either
-     *              need to have all arguments in an array, or in a object. This
-     *              approach is counter intuitive and cumbersome, and many
-     *              beginners have issues with it.
-     *            </p>
-     *            <p>
-     *              This function takes the array argument, and spreads it to
-     *              the given function. This way people can have functions with
-     *              all the arguments listed as subscribers and RPCs. The code
-     *              is thus cleaner and easier to reason about.
-     *              </p>
+     * @description
+     *  <p>
+     *    To register and subscribe to crossbar events, you either need to have all arguments in an array, or in a object.
+     *    This approach is counter intuitive and cumbersome, and many beginners have issues with it.
+     *  </p>
+     *  <p>
+     *    This function takes the array argument, and spreads it to the given function.
+     *    This way people can have functions with all the arguments listed as subscribers and RPCs.
+     *    The code is thus cleaner and easier to reason about.
+     *  </p>
      */
     const deCrossbarify = callback => args => callback.call( null, ...args );
 
