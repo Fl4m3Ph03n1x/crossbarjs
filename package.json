@@ -1,6 +1,6 @@
 {
   "name": "crossbarjs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Facade for autobahn.js and crossbar that aims at simpliflying and centralizing its use.",
   "main": "./src/crossbar.js",
   "directories": {
