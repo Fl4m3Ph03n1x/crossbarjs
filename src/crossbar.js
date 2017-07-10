@@ -25,7 +25,7 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.0.6
+ *  @version  1.1.0
  *  @module   crossbarFacade
  *  @desc
  *  Encapsulates crossbar publish/subscribe and register/unregister/call functionality into a facade, easier to use and reason about.
@@ -65,7 +65,9 @@ const crossbarFacade = () => {
      *  @returns  {Promise}
      *
      *  @description
-     *  Connects this instance to the given direction. Will only resolve once a connection is successfully open.
+     *  Connects this instance to the given direction.
+     *  Resolves if a connection is established **and** opened successfully.
+     *  If it fails to open the connection, it rejects with a reason and an optional  details object.
      *
      *  @see          {@link https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-options|autobahn-js connection options}
      *
@@ -75,7 +77,9 @@ const crossbarFacade = () => {
      *  const crossbar  = crossbarjs();
      *  crossbar.connect()
      *    .then(() => console.log("Great Success!"))
-     *    .catch(console.log);
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     *    });
      *
      *  @example  <caption>Creates a connections with custom parameters:</caption>
      *  const crossbarjs = require("crossbarjs");
@@ -84,7 +88,9 @@ const crossbarFacade = () => {
      *  const connectParams = {url: "myURL", realm: "Lovecraft"};
      *  crossbar.connect(connectParams)
      *    .then(() => console.log("Great Success!"))
-     *    .catch(console.log);
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     *    });
      *
      *  @example  <caption>Additionally, you may also change the "options.connect":</caption>
      *  const crossbarjs = require("crossbarjs");
@@ -97,12 +103,15 @@ const crossbarFacade = () => {
      *
      *  crossbar.connect()
      *    .then(() => console.log("Great Success!"))
-     *    .catch(console.log);
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     *    });
      */
     const connect = function ( connectOpts = options.connect ) {
-        return new Promise( resolve => {
+        return new Promise( ( resolve, reject ) => {
             connection = new autobahn.Connection( connectOpts );
             connection.onopen = () => resolve();
+            connection.onclose = ( reason, details ) => reject( reason, details );
             connection.open();
         } );
     };
@@ -110,10 +119,12 @@ const crossbarFacade = () => {
     /**
      *  @public
      *  @function disconnect
+     *  @param    {string}  [reason="wamp.goodbye.normal"]  WAMP URI providing a closing reason e.g. 'com.myapp.close.signout' to the server side.
+     *  @param    {string}  [message]                       Human-readable closing message.
      *  @returns {Promise}
      *
      *  @description
-     *  Closes the crossbar connection. Resolves once the connection is closed.
+     *  Closes the crossbar connection. Resolves once the connection is closed or rejects if there was an error closing.
      *
      *  @example <caption>Simply disconnect:</caption>
      *
@@ -128,14 +139,25 @@ const crossbarFacade = () => {
      *  const crossbar  = crossbarjs();
      *  crossbar.connect()
      *    .then(() => console.log("connected!"))
-     *    .then(crossbar.disconnect)
+     *    .then(() => crossbar.disconnect("com.myapp.close.signout", "client does not like our service !!!!"))
      *    .then(() => console.log("disconnected!"))
      *    .catch(console.log);
+     *
+     * @example <caption>Error while disconnecting:</caption>
+     *  const crossbarjs = require("crossbarjs");
+     *
+     *  const crossbar  = crossbarjs();
+     *  crossbar.disconnect()
+     *    .catch(console.log);  //error, we never connected in the first place!
      */
-    const disconnect = function () {
-        return new Promise( resolve => {
-            connection.onclose = () => resolve();
-            connection.close();
+    const disconnect = function ( reason, message ) {
+        return new Promise( ( resolve, reject ) => {
+            connection.onclose = resolve;
+            try {
+                connection.close( reason, message );
+            } catch ( error ) {
+                reject( error );
+            }
         } );
     };
 
@@ -258,7 +280,6 @@ const crossbarFacade = () => {
                 } );
         }
     };
-
 
     /**
      *  @public

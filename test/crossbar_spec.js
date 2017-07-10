@@ -50,10 +50,10 @@ describe( "crossbarServer", () => {
         expect( server.getOpts() ).to.eql( expected );
     } );
 
-    it("should reset options to default", () => {
+    it( "should reset options to default", () => {
         server.setOptsDefault();
         expect( server.getOpts() ).to.eql( DEFAULT_OPTS );
-    });
+    } );
 
     it( "should connect to crossbar", done => {
         server.connect()
@@ -286,5 +286,9 @@ describe( "crossbarServer", () => {
             } )
             .then( done )
             .catch( err => done( err ) );
+    } );
+
+    it( "should reject if disconnect fails", () => {
+        expect( server.disconnect() ).to.be.rejected;
     } );
 } );
