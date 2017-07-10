@@ -95,7 +95,7 @@
 	<dt class="tag-version method-doc-label method-doc-details-label">Version:</dt>
 	<dd class="tag-version">
 		<ul class="dummy">
-			<li>1.0.6</li>
+			<li>1.1.0</li>
 		</ul>
 	</dd>
 	
@@ -323,7 +323,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-315">line 315</a>
+				 <a href="crossbar.js.html#sunlight-1-line-336">line 336</a>
 			</li>
 		</ul>
 	</dd>
@@ -412,7 +412,7 @@
 
     
     <div class="description">
-        <p>Connects this instance to the given direction. Will only resolve once a connection is successfully open.</p>
+        <p>Connects this instance to the given direction.<br> Resolves if a connection is established <strong>and</strong> opened successfully.<br> If it fails to open the connection, it rejects with a reason and an optional  details object.</p>
     </div>
     
 
@@ -694,7 +694,9 @@
  const crossbar  = crossbarjs();
  crossbar.connect()
    .then(() =&gt; console.log(&quot;Great Success!&quot;))
-   .catch(console.log);
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+   });
 
  </pre>
 
@@ -706,7 +708,9 @@
  const connectParams = {url: &quot;myURL&quot;, realm: &quot;Lovecraft&quot;};
  crossbar.connect(connectParams)
    .then(() =&gt; console.log(&quot;Great Success!&quot;))
-   .catch(console.log);
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+   });
 
  </pre>
 
@@ -722,7 +726,9 @@
 
  crossbar.connect()
    .then(() =&gt; console.log(&quot;Great Success!&quot;))
-   .catch(console.log);</pre>
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+   });</pre>
 
 
     
@@ -732,7 +738,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="~disconnect"><span class="type-signature">&lt;inner> </span>disconnect()</h4>
+    <h4 class="name" id="~disconnect"><span class="type-signature">&lt;inner> </span>disconnect( [reason] [, message])</h4>
     
     
 </dt>
@@ -740,7 +746,7 @@
 
     
     <div class="description">
-        <p>Closes the crossbar connection. Resolves once the connection is closed.</p>
+        <p>Closes the crossbar connection. Resolves once the connection is closed or rejects if there was an error closing.</p>
     </div>
     
 
@@ -749,6 +755,114 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reason</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    "wamp.goodbye.normal"
+                
+                </td>
+            
+
+            <td class="description last"><p>WAMP URI providing a closing reason e.g. 'com.myapp.close.signout' to the server side.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Human-readable closing message.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -787,7 +901,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-110">line 110</a>
+				 <a href="crossbar.js.html#sunlight-1-line-119">line 119</a>
 			</li>
 		</ul>
 	</dd>
@@ -852,9 +966,17 @@
  const crossbar  = crossbarjs();
  crossbar.connect()
    .then(() =&gt; console.log(&quot;connected!&quot;))
-   .then(crossbar.disconnect)
+   .then(() =&gt; crossbar.disconnect(&quot;com.myapp.close.signout&quot;, &quot;client does not like our service !!!!&quot;))
    .then(() =&gt; console.log(&quot;disconnected!&quot;))
    .catch(console.log);</pre>
+
+        <p class="code-caption">Error while disconnecting:</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+ const crossbar  = crossbarjs();
+ crossbar.disconnect()
+   .catch(console.log);  //error, we never connected in the first place!</pre>
 
 
     
@@ -919,7 +1041,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-162">line 162</a>
+				 <a href="crossbar.js.html#sunlight-1-line-184">line 184</a>
 			</li>
 		</ul>
 	</dd>
@@ -1043,7 +1165,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-351">line 351</a>
+				 <a href="crossbar.js.html#sunlight-1-line-372">line 372</a>
 			</li>
 		</ul>
 	</dd>
@@ -1160,7 +1282,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-142">line 142</a>
+				 <a href="crossbar.js.html#sunlight-1-line-164">line 164</a>
 			</li>
 		</ul>
 	</dd>
@@ -1379,7 +1501,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-410">line 410</a>
+				 <a href="crossbar.js.html#sunlight-1-line-431">line 431</a>
 			</li>
 		</ul>
 	</dd>
@@ -1551,7 +1673,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-179">line 179</a>
+				 <a href="crossbar.js.html#sunlight-1-line-201">line 201</a>
 			</li>
 		</ul>
 	</dd>
@@ -1746,7 +1868,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-366">line 366</a>
+				 <a href="crossbar.js.html#sunlight-1-line-387">line 387</a>
 			</li>
 		</ul>
 	</dd>
@@ -1863,7 +1985,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-398">line 398</a>
+				 <a href="crossbar.js.html#sunlight-1-line-419">line 419</a>
 			</li>
 		</ul>
 	</dd>
@@ -2032,7 +2154,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-437">line 437</a>
+				 <a href="crossbar.js.html#sunlight-1-line-458">line 458</a>
 			</li>
 		</ul>
 	</dd>
@@ -2215,7 +2337,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-263">line 263</a>
+				 <a href="crossbar.js.html#sunlight-1-line-284">line 284</a>
 			</li>
 		</ul>
 	</dd>
@@ -2393,7 +2515,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-540">line 540</a>
+				 <a href="crossbar.js.html#sunlight-1-line-561">line 561</a>
 			</li>
 		</ul>
 	</dd>
@@ -2507,7 +2629,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on Fri Jul 7th 2017
+		on Mon Jul 10th 2017
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
