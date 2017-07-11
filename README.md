@@ -59,10 +59,10 @@ For additional information on the API, feel free to check the [crossbarjs home p
 
 ### Events
 
- - onClose
- - onOpen
- - onError
- - onRecover
+ - <a href="https://fl4m3ph03n1x.github.io/crossbarjs/module-crossbarFacade.html#~onClose__anchor">onClose</a>
+ - <a href="https://fl4m3ph03n1x.github.io/crossbarjs/module-crossbarFacade.html#~onOpen__anchor">onOpen</a>
+ - <a href="https://fl4m3ph03n1x.github.io/crossbarjs/module-crossbarFacade.html#~onError__anchor">onError</a>
+ - <a href="https://fl4m3ph03n1x.github.io/crossbarjs/module-crossbarFacade.html#~onRecover__anchor">onRecover</a>
 
 ##  Examples
 

@@ -209,6 +209,13 @@ const crossbarFacade = () => {
         } );
     };
 
+    /**
+     * @private
+     * @function  recover
+     *
+     * @description
+     * This is responsible for the recovery proccess. Every time a connection is recovered, this function will re-subscribe and re-register everything to the functionality of the service is not interrupted.
+     */
     const recover = () =>
         recoverFromMap( "subscribe", subscritionMap )
             .then( () => recoverFromMap( "register", registrationMap ) );

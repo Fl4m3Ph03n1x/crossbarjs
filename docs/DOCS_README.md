@@ -11,9 +11,7 @@
 
 # What
 
-Technically speaking `crossbarjs` is a Facade over [`autobahn-js`](https://github.com/crossbario/autobahn-js).
-
-In practice, it is a library whose main purpose is to make interactions with crossbar easier, with support and focus over the 4 main crossbar functionalities and their counterparts:
+`crossbarjs` is a library whose main purpose is to make interactions with crossbar easier, with support and focus over the 4 main crossbar functionalities and their counterparts:
 
  - publish
  - subscribe/unsubscribe
@@ -24,11 +22,9 @@ Without compromising access to any of the more advanced functionalities provided
 
 # Why
 
-`autobahn-js` API is long and it breaks the principle of [least astonishment](https://en.wikipedia.org/wiki/Principle_of_least_astonishment). To use it you need to go through pages of sparse documentation understand advanced principles of JavaScript.
+ - `autobahn-js` (the only other option for JavaScript) API is long and it breaks the principle of [least astonishment](https://en.wikipedia.org/wiki/Principle_of_least_astonishment). To use it you need to go through pages of sparse documentation understand advanced principles of JavaScript. `crossbarjs` is an attempt at fixing that. The API it provides is as simple and beginner friendly as possible and its purpose is to make sure that all you need to run crossbario is to download this module and run it without spending extra time on docs, as it is designed to be as intuitive as possible. `crossbarjs` uses `autobahn-js` behind the hood, so you can have all the advanced features of the latter one without all of the hassle.
 
-`crossbarjs` is an attempt at fixing that. The API it provides is as simple and beginner friendly as possible and its purpose is to make sure that all you need to run crossbario is to download this module and run it without spending extra time on docs, as it is designed to be as intuitive as possible.
-
-And if you still need some advanced options, you can always use them via an `options` object.
+ - `crossbarjs` handles full automatic reconnection, unlike its competitor. With `crossbarjs` if your connection fails, the library will attempt a partial reconnect first and then will re-subscribe and re-register everything, so your service keeps working as expected with no down time whatsoever. Its like nothing happened at all.
 
 # How
 

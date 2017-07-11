@@ -95,8 +95,7 @@
     <section class="readme-section">
         <article><div align="center"><br>    <img src="https://raw.githubusercontent.com/Fl4m3Ph03n1x/crossbarjs/master/logos/logo_no_wm.png"><br></div><br><div align="center"><br><br><a href="https://nodei.co/npm/crossbarjs/"><img src="https://nodei.co/npm/crossbarjs.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a><br><br><a href="https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs"><img src="https://travis-ci.org/Fl4m3Ph03n1x/crossbarjs.svg?branch=master" alt="Build Status"></a> <a href="https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs"><img src="https://codecov.io/gh/Fl4m3Ph03n1x/crossbarjs/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac"><img src="https://www.versioneye.com/user/projects/595622b0368b0800512ab2ac/badge.svg" alt="Dependency Status"></a> <a href="https://codeclimate.com/github/Fl4m3Ph03n1x/crossbarjs"><img src="https://codeclimate.com/github/Fl4m3Ph03n1x/crossbarjs/badges/gpa.svg" alt="Code Climate"></a> <a href="https://github.com/dwyl/esta/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" alt="contributions welcome"></a><br><br></div>
 
-<h1>What</h1><p>Technically speaking <code>crossbarjs</code> is a Facade over <a href="https://github.com/crossbario/autobahn-js"><code>autobahn-js</code></a>.</p>
-<p>In practice, it is a library whose main purpose is to make interactions with crossbar easier, with support and focus over the 4 main crossbar functionalities and their counterparts:</p>
+<h1>What</h1><p><code>crossbarjs</code> is a library whose main purpose is to make interactions with crossbar easier, with support and focus over the 4 main crossbar functionalities and their counterparts:</p>
 <ul>
 <li>publish</li>
 <li>subscribe/unsubscribe</li>
@@ -104,9 +103,12 @@
 <li>call</li>
 </ul>
 <p>Without compromising access to any of the more advanced functionalities provided in the layer bellow.</p>
-<h1>Why</h1><p><code>autobahn-js</code> API is long and it breaks the principle of <a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">least astonishment</a>. To use it you need to go through pages of sparse documentation understand advanced principles of JavaScript.</p>
-<p><code>crossbarjs</code> is an attempt at fixing that. The API it provides is as simple and beginner friendly as possible and its purpose is to make sure that all you need to run crossbario is to download this module and run it without spending extra time on docs, as it is designed to be as intuitive as possible.</p>
-<p>And if you still need some advanced options, you can always use them via an <code>options</code> object.</p>
+<h1>Why</h1><ul>
+<li><p><code>autobahn-js</code> (the only other option for JavaScript) API is long and it breaks the principle of <a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">least astonishment</a>. To use it you need to go through pages of sparse documentation understand advanced principles of JavaScript. <code>crossbarjs</code> is an attempt at fixing that. The API it provides is as simple and beginner friendly as possible and its purpose is to make sure that all you need to run crossbario is to download this module and run it without spending extra time on docs, as it is designed to be as intuitive as possible. <code>crossbarjs</code> uses <code>autobahn-js</code> behind the hood, so you can have all the advanced features of the latter one without all of the hassle.</p>
+</li>
+<li><p><code>crossbarjs</code> handles full automatic reconnection, unlike its competitor. With <code>crossbarjs</code> if your connection fails, the library will attempt a partial reconnect first and then will re-subscribe and re-register everything, so your service keeps working as expected with no down time whatsoever. Its like nothing happened at all.</p>
+</li>
+</ul>
 <h1>How</h1><p>Following are instructions on how to intsall and use <code>crossbarjs</code>. For more information about the project you can check GitHub page:</p>
 <ul>
 <li><a href="https://github.com/Fl4m3Ph03n1x/crossbarjs">crossbarjs Github</a></li>
