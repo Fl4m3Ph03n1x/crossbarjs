@@ -25,11 +25,11 @@ const autobahn = require( "autobahn" );
  *  @public
  *  @author   Pedro Miguel P. S. Martins
  *  @version  1.2.0
- *  @module   crossbarFacade
+ *  @module   crossbarjs
  *  @desc
  *  Encapsulates crossbar publish/subscribe and register/unregister/call functionality into a facade, easier to use and reason about.
  */
-const crossbarFacade = () => {
+const crossbarFactory = () => {
 
     const DEFAULT_OPTS = Object.freeze( {
         connect: {
@@ -757,4 +757,4 @@ const crossbarFacade = () => {
     } );
 };
 
-module.exports = crossbarFacade;
+module.exports = crossbarFactory;
