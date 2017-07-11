@@ -209,22 +209,17 @@ const crossbarFacade = () => {
         } );
     };
 
-    const recover = async function () {
-        for ( const [ topic, data ] of subscritionMap ) {
-            await add(
-                "subscribe",
-                topic,
-                data.cb,
-                options.subscribe, { set: () => {} }
-            ).catch( err => events.onError( err ) );
-        }
+    const recover = () =>
+        recoverFromMap( "subscribe", subscritionMap )
+            .then( () => recoverFromMap( "register", registrationMap ) );
 
-        for ( const [ name, data ] of registrationMap ) {
+    const recoverFromMap = async function ( action, map ) {
+        for ( const [ key, data ] of map ) {
             await add(
-                "register",
-                name,
+                action,
+                key,
                 data.cb,
-                options.register, { set: () => {} }
+                options[ action ], { set: () => {} }
             ).catch( err => events.onError( err ) );
         }
     };
@@ -236,17 +231,99 @@ const crossbarFacade = () => {
         onError: () => {}
     };
 
+    /**
+     * @public
+     * @function  onClose
+     * @param     {function}   fun   The function to be called when a connection closes.
+     * @throws    {TypeError} If &lt;code>fun&lt;/code> is not a function.
+     *
+     * @description
+     * Hook for when the connection closes. This usually happens when crossbar itself dies or closes its connections.
+     * The passed function will receive 2 parameters, &lt;code>reason&lt;/code>, a human readable reason for why the connection was closed, and a second optional parameter &lt;code>details&lt;/code>, an object containing the details of why the connection was closed. This second parameter is not always passed.
+     *
+     * @example &lt;caption>Creating a hook that logs when a connection was closed:&lt;/caption>
+     * const crossbarjs = require("crossbarjs");
+     *
+     * const crossbar  = crossbarjs();
+     * crossbar.connect()
+     *    .then(() => crossbar.onClose(console.log))  //if crossbar dies, this gets fired
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     * });
+     */
     const onClose = fun => {
+        if ( !isFunction( fun ) )
+            throw new TypeError( `${fun} must be a Function.` );
         events.onClose = fun;
     };
 
+    /**
+     * @public
+     * @function  onOpen
+     * @param     {function}   fun   The function to be called when a connection opens.
+     * @throws    {TypeError} If &lt;code>fun&lt;/code> is not a function.
+     *
+     * @description
+     * Hook for when the connection opens. This usually happens when the application first connects to crossbar and when the connection is lost and later on recovered.
+     * The passed function will receive no parameters.
+     *
+     * @example &lt;caption>Creating a hook that logs when a connection opens:&lt;/caption>
+     * const crossbarjs = require("crossbarjs");
+     *
+     * const crossbar  = crossbarjs();
+     * crossbar.onOpen(() => console.log("I'm alive!"));
+     * crossbar.connect()
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     * });
+     */
     const onOpen = fun => {
         events.onOpen = fun;
     };
 
+    /**
+     * @public
+     * @function  onRecover
+     * @param     {function}   fun   The function to be called when a connection recovers.
+     * @throws    {TypeError} If &lt;code>fun&lt;/code> is not a function.
+     *
+     * @description
+     * Hook for when the connection recovers. A connection recovers when it has closed unexpectadly and then reconnects activating the recover proceaduer, that re-subscribes and re-registers any calls previously done automatically.
+     * The passed function will receive no parameters.
+     *
+     * @example &lt;caption>Creating a hook that logs when a connection recovers:&lt;/caption>
+     * const crossbarjs = require("crossbarjs");
+     *
+     * const crossbar  = crossbarjs();
+     * crossbar.onRecover(() => console.log("I'm back baby!"));
+     * crossbar.connect()
+     *    .catch((reason, details) => {
+     *        console.log(`Failed becasue ${reason}: ${JSON.stringify(details)}`);
+     * });
+     * //kill crossbar
+     * //start crossbar
+     * //message should appear
+     */
     const onRecover = fun => {
         events.onRecover = fun;
     };
+
+    /**
+     * @public
+     * @function  onError
+     * @param     {function}   fun   The function to be called when an Error occurs.
+     * @throws    {TypeError} If &lt;code>fun&lt;/code> is not a function.
+     *
+     * @description
+     * Hook for when an error occurs. Errors may occur when crossbarjs is attempting automatic reconnection or becasue some other component failed.
+     * The passed function will receive the &lt;code>error&lt;/code> as a parameter.
+     *
+     * @example &lt;caption>Creating a hook that logs when an error occurs:&lt;/caption>
+     * const crossbarjs = require("crossbarjs");
+     *
+     * const crossbar  = crossbarjs();
+     * crossbar.onRecover(error => console.log(`Got error: ${error}`));
+     */
     const onError = fun => {
         events.onError = fun;
     };

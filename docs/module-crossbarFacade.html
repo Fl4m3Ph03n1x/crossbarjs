@@ -323,7 +323,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-392">line 392</a>
+				 <a href="crossbar.js.html#sunlight-1-line-469">line 469</a>
 			</li>
 		</ul>
 	</dd>
@@ -901,7 +901,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-175">line 175</a>
+				 <a href="crossbar.js.html#sunlight-1-line-252">line 252</a>
 			</li>
 		</ul>
 	</dd>
@@ -1041,7 +1041,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-240">line 240</a>
+				 <a href="crossbar.js.html#sunlight-1-line-317">line 317</a>
 			</li>
 		</ul>
 	</dd>
@@ -1165,7 +1165,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-432">line 432</a>
+				 <a href="crossbar.js.html#sunlight-1-line-509">line 509</a>
 			</li>
 		</ul>
 	</dd>
@@ -1282,7 +1282,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-220">line 220</a>
+				 <a href="crossbar.js.html#sunlight-1-line-297">line 297</a>
 			</li>
 		</ul>
 	</dd>
@@ -1343,6 +1343,729 @@
     <pre class="sunlight-highlight-javascript">//Assuming we have previously connected
  const session = crossbar.getSession();
  console.log(&#x60;Session id is: ${session.id}&#x60;);</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~onClose"><span class="type-signature">&lt;inner> </span>onClose(fun)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Hook for when the connection closes. This usually happens when crossbar itself dies or closes its connections.<br>The passed function will receive 2 parameters, <code>reason</code>, a human readable reason for why the connection was closed, and a second optional parameter <code>details</code>, an object containing the details of why the connection was closed. This second parameter is not always passed.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function to be called when a connection closes.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-155">line 155</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If <code>fun</code> is not a function.</p>
+        </div>
+    </dt>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+
+            </dd>
+        </dl>
+    </dt>
+</dl>
+
+
+        
+
+    
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Creating a hook that logs when a connection was closed:</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+const crossbar  = crossbarjs();
+crossbar.connect()
+   .then(() =&gt; crossbar.onClose(console.log))  //if crossbar dies, this gets fired
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~onError"><span class="type-signature">&lt;inner> </span>onError(fun)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Hook for when an error occurs. Errors may occur when crossbarjs is attempting automatic reconnection or becasue some other component failed.<br>The passed function will receive the <code>error</code> as a parameter.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function to be called when an Error occurs.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-232">line 232</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If <code>fun</code> is not a function.</p>
+        </div>
+    </dt>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+
+            </dd>
+        </dl>
+    </dt>
+</dl>
+
+
+        
+
+    
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Creating a hook that logs when an error occurs:</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+const crossbar  = crossbarjs();
+crossbar.onRecover(error =&gt; console.log(&#x60;Got error: ${error}&#x60;));</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~onOpen"><span class="type-signature">&lt;inner> </span>onOpen(fun)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Hook for when the connection opens. This usually happens when the application first connects to crossbar and when the connection is lost and later on recovered.<br>The passed function will receive no parameters.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function to be called when a connection opens.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-181">line 181</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If <code>fun</code> is not a function.</p>
+        </div>
+    </dt>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+
+            </dd>
+        </dl>
+    </dt>
+</dl>
+
+
+        
+
+    
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Creating a hook that logs when a connection opens:</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+const crossbar  = crossbarjs();
+crossbar.onOpen(() =&gt; console.log(&quot;I&#x27;m alive!&quot;));
+crossbar.connect()
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~onRecover"><span class="type-signature">&lt;inner> </span>onRecover(fun)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Hook for when the connection recovers. A connection recovers when it has closed unexpectadly and then reconnects activating the recover proceaduer, that re-subscribes and re-registers any calls previously done automatically.<br>The passed function will receive no parameters.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function to be called when a connection recovers.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="crossbar.js.html">crossbar.js</a>,
+				 <a href="crossbar.js.html#sunlight-1-line-205">line 205</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If <code>fun</code> is not a function.</p>
+        </div>
+    </dt>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+
+            </dd>
+        </dl>
+    </dt>
+</dl>
+
+
+        
+
+    
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Creating a hook that logs when a connection recovers:</p>
+    
+    <pre class="sunlight-highlight-javascript">const crossbarjs = require(&quot;crossbarjs&quot;);
+
+const crossbar  = crossbarjs();
+crossbar.onRecover(() =&gt; console.log(&quot;I&#x27;m back baby!&quot;));
+crossbar.connect()
+   .catch((reason, details) =&gt; {
+       console.log(&#x60;Failed becasue ${reason}: ${JSON.stringify(details)}&#x60;);
+});
+//kill crossbar
+//start crossbar
+//message should appear</pre>
 
 
     
@@ -1501,7 +2224,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-491">line 491</a>
+				 <a href="crossbar.js.html#sunlight-1-line-568">line 568</a>
 			</li>
 		</ul>
 	</dd>
@@ -1673,7 +2396,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-257">line 257</a>
+				 <a href="crossbar.js.html#sunlight-1-line-334">line 334</a>
 			</li>
 		</ul>
 	</dd>
@@ -1868,7 +2591,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-447">line 447</a>
+				 <a href="crossbar.js.html#sunlight-1-line-524">line 524</a>
 			</li>
 		</ul>
 	</dd>
@@ -1985,7 +2708,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-479">line 479</a>
+				 <a href="crossbar.js.html#sunlight-1-line-556">line 556</a>
 			</li>
 		</ul>
 	</dd>
@@ -2154,7 +2877,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-522">line 522</a>
+				 <a href="crossbar.js.html#sunlight-1-line-599">line 599</a>
 			</li>
 		</ul>
 	</dd>
@@ -2337,7 +3060,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-340">line 340</a>
+				 <a href="crossbar.js.html#sunlight-1-line-417">line 417</a>
 			</li>
 		</ul>
 	</dd>
@@ -2515,7 +3238,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="crossbar.js.html">crossbar.js</a>,
-				 <a href="crossbar.js.html#sunlight-1-line-628">line 628</a>
+				 <a href="crossbar.js.html#sunlight-1-line-705">line 705</a>
 			</li>
 		</ul>
 	</dd>
