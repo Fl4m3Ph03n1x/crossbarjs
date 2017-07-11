@@ -1,6 +1,5 @@
 const isString = require( "lodash.isstring" );
 const isFunction = require( "lodash.isfunction" );
-const isEmpty = require( "lodash.isempty" );
 const autobahn = require( "autobahn" );
 
 /**
@@ -25,7 +24,7 @@ const autobahn = require( "autobahn" );
 /**
  *  @public
  *  @author   Pedro Miguel P. S. Martins
- *  @version  1.1.0
+ *  @version  1.2.0
  *  @module   crossbarFacade
  *  @desc
  *  Encapsulates crossbar publish/subscribe and register/unregister/call functionality into a facade, easier to use and reason about.
@@ -110,10 +109,67 @@ const crossbarFacade = () => {
     const connect = function ( connectOpts = options.connect ) {
         return new Promise( ( resolve, reject ) => {
             connection = new autobahn.Connection( connectOpts );
-            connection.onopen = () => resolve();
-            connection.onclose = ( reason, details ) => reject( reason, details );
+            connection.onopen = () => {
+                events.onOpen();
+                resolve();
+
+                connection.onopen = () => {
+                    events.onOpen();
+                    recover()
+                        .then( events.onRecover )
+                        .catch( events.onError );
+                };
+            };
+
+            connection.onclose = ( reason, details ) => {
+                events.onClose( reason, details );
+                reject( reason, details );
+                connection.onclose = events.onClose;
+            };
             connection.open();
         } );
+    };
+
+    const recover = async function () {
+        for ( const [ topic, data ] of subscritionMap ) {
+            await add(
+                "subscribe",
+                topic,
+                data.cb,
+                options.subscribe, { set: () => {} }
+            ).catch( err => events.onError( err ) );
+        }
+
+        for ( const [ name, data ] of registrationMap ) {
+            await add(
+                "register",
+                name,
+                data.cb,
+                options.register, { set: () => {} }
+            ).catch( err => events.onError( err ) );
+        }
+    };
+
+    const events = {
+        onClose: () => {},
+        onOpen: () => {},
+        onRecover: () => {},
+        onError: () => {}
+    };
+
+    const onClose = fun => {
+        events.onClose = fun;
+    };
+
+    const onOpen = fun => {
+        events.onOpen = fun;
+    };
+
+    const onRecover = fun => {
+        events.onRecover = fun;
+    };
+    const onError = fun => {
+        events.onError = fun;
     };
 
     /**
@@ -366,7 +422,11 @@ const crossbarFacade = () => {
      *      .catch(console.log);
      */
     const call = function ( rpcName, ...args ) {
-        return getSession().call( rpcName, args, options.call );
+        try {
+            return getSession().call( rpcName, args, {}, options.call );
+        } catch ( error ) {
+            return Promise.reject( error );
+        }
     };
 
     /**
@@ -449,10 +509,14 @@ const crossbarFacade = () => {
     const publish = function ( topic, ...params ) {
         //autobahn-js only returns promise under specific circumstances. We
         // fix that here.
-        const res = getSession().publish( topic, params, {}, options.publish );
-        return !isEmpty( options.publish ) && options.publish !== undefined ?
-            res :
-            Promise.resolve();
+        let res;
+        try {
+            res = getSession().publish( topic, params, {}, options.publish );
+        } catch ( error ) {
+            return Promise.reject( error );
+        }
+
+        return options.publish.acknowledge !== undefined ? res : Promise.resolve();
     };
 
     /**
@@ -513,7 +577,10 @@ const crossbarFacade = () => {
     const add = ( action, id, callback, options, map ) => {
         return getSession()[ action ]( id, callback, options )
             .then( result => {
-                map.set( id, result );
+                map.set( id, {
+                    cb: callback,
+                    opResult: result
+                } );
             } );
     };
 
@@ -533,9 +600,9 @@ const crossbarFacade = () => {
      * Introduced after codeclimate code quality analysis as a means to remove duplication betwwen regiterOne and subscribe, since they both have the same structure.
      * */
     const remove = ( action, id, map ) => {
-        return getSession()[ action ]( map.get( id ) )
-            .then( result => {
-                map.delete( id, result );
+        return getSession()[ action ]( map.get( id ).opResult )
+            .then( () => {
+                map.delete( id );
             } );
     };
 
@@ -598,7 +665,11 @@ const crossbarFacade = () => {
         setOptsDefault,
         publish,
         subscribe,
-        unsubscribe
+        unsubscribe,
+        onOpen,
+        onClose,
+        onRecover,
+        onError
     } );
 };
 
