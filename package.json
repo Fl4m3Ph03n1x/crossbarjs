@@ -1,6 +1,6 @@
 {
   "name": "crossbarjs",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Facade for autobahn.js and crossbar that aims at simplifying and centralizing its use.",
   "main": "./src/crossbar.js",
   "directories": {
@@ -38,12 +38,12 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^4.19.1",
+    "eslint": "^5.2.0",
     "ink-docstrap": "^1.3.2",
     "jsdoc": "^3.5.5",
     "jsdoc-strip-async-await": "^0.1.0",
-    "mocha": "^4.1.0",
-    "nyc": "^11.9.0",
-    "sinon": "^4.5.0"
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "sinon": "^6.1.4"
   }
 }
